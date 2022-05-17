@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/google/uuid"
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -18,7 +19,18 @@ type System struct {
 }
 
 func (me *System) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	tpl.Execute(w, me)
+	rows, _ := me.Query("SELECT * FROM changes")
+	defer rows.Close()
+	var changes []Change
+	for rows.Next() {
+		var c Change
+		rows.Scan(&c.UUID, &c.Title, &c.Description)
+		changes = append(changes, c)
+	}
+	m := map[string]interface{}{
+		"Changes": changes,
+	}
+	tpl.Execute(w, m)
 }
 
 var index = `
@@ -26,7 +38,11 @@ var index = `
 
 <html>
 <body>
-
+<ul>
+{{range .Changes}}
+<li>{{.Title}}</li>
+{{end}}
+</ul>
 </body>
 </html>
 `
@@ -37,15 +53,17 @@ var changesTbl = struct {
 	CREATE, INSERT string
 }{
 	`CREATE TABLE changes (
+        uuid VARCHAR(36) NULL,
         title VARCHAR(64) NULL,
         description VARCHAR(2048) NULL
     )`,
-	"INSERT INTO changes(title, description) values(?,?)",
+	"INSERT INTO changes(uuid, title, description) values(?,?,?)",
 }
 
 type Change struct {
-	Title       string
-	Description string
+	uuid.UUID
+	Title
+	Description
 }
 
 func NewPlanDB(filename string) (*PlanDB, error) {
@@ -67,3 +85,6 @@ type PlanDB struct {
 
 	InsertChange *sql.Stmt
 }
+
+type Title string
+type Description string
