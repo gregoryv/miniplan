@@ -39,4 +39,8 @@ func TestSystem(t *testing.T) {
 	if got := buf.String(); !strings.Contains(got, "title 1") {
 		t.Fatal(got, "\nmissing data")
 	}
+
+	if _, err := db.DeleteChange.Exec(id); err != nil {
+		t.Fatal(err)
+	}
 }

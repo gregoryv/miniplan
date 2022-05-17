@@ -39,12 +39,25 @@ func (me *System) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte(err.Error()))
 		}
 	case "POST":
-		me.InsertChange.Exec(
-			uuid.Must(uuid.NewRandom()).String(),
-			r.PostFormValue("title"),
-			r.PostFormValue("description"),
-		)
+		switch r.PostFormValue("submit") {
+		case "add":
+			me.InsertChange.Exec(
+				uuid.Must(uuid.NewRandom()).String(),
+				r.PostFormValue("title"),
+				r.PostFormValue("description"),
+			)
+
+		case "delete":
+			_, err := me.DeleteChange.Exec(
+				"%" + r.PostFormValue("uuid"),
+			)
+			if err != nil {
+				w.WriteHeader(500)
+				w.Write([]byte(err.Error()))
+			}
+		}
 		http.Redirect(w, r, "/", 303)
+
 	default:
 		w.WriteHeader(405)
 	}
@@ -66,7 +79,11 @@ var index = `
 Change: <input name="title"><br>
 Description: <br>
 <textarea cols="50" rows="20" name="description"></textarea>
-<input type=submit>
+<input type=submit name=submit value=add>
+</form>
+
+<form method="POST">
+Ref: <input name="uuid"><input type=submit name=submit value=delete>
 </form>
 </body>
 </html>
@@ -75,14 +92,15 @@ Description: <br>
 var tpl = template.Must(template.New("").Parse(index))
 
 var changesTbl = struct {
-	CREATE, INSERT string
+	CREATE, INSERT, DELETE string
 }{
-	`CREATE TABLE changes (
+	CREATE: `CREATE TABLE changes (
         uuid VARCHAR(36) NULL,
         title VARCHAR(64) NULL,
         description VARCHAR(2048) NULL
     )`,
-	"INSERT INTO changes(uuid, title, description) values(?,?,?)",
+	INSERT: "INSERT INTO changes(uuid, title, description) values(?,?,?)",
+	DELETE: "DELETE FROM changes WHERE uuid LIKE ?",
 }
 
 type Change struct {
@@ -107,6 +125,9 @@ func NewPlanDB(filename string) (*PlanDB, error) {
 	mdb := &PlanDB{DB: db}
 	stmt, err := db.Prepare(changesTbl.INSERT)
 	mdb.InsertChange = stmt
+
+	stmt, err = db.Prepare(changesTbl.DELETE)
+	mdb.DeleteChange = stmt
 	return mdb, err
 }
 
@@ -114,6 +135,7 @@ type PlanDB struct {
 	*sql.DB
 
 	InsertChange *sql.Stmt
+	DeleteChange *sql.Stmt
 }
 
 type Title string
