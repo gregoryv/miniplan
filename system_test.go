@@ -30,12 +30,13 @@ func TestSystem(t *testing.T) {
 	defer sys.Close()
 
 	resp := w.Result()
-	if resp.StatusCode != 200 {
-		t.Fatal(resp.Status)
-	}
 	var buf bytes.Buffer
 	io.Copy(&buf, resp.Body)
-	if got := buf.String(); !strings.Contains(got, "title ") {
+
+	if resp.StatusCode != 200 {
+		t.Fatal(resp.Status, buf.String())
+	}
+	if got := buf.String(); !strings.Contains(got, "title 1") {
 		t.Fatal(got, "\nmissing data")
 	}
 }
