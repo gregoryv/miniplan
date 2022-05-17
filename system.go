@@ -4,23 +4,17 @@ import (
 	"database/sql"
 	"html/template"
 	"net/http"
+	"strings"
 
 	_ "github.com/mattn/go-sqlite3"
 )
-
-func NewSystemLite(filename string) (*System, error) {
-	db, err := sql.Open("sqlite3", filename)
-	sys := NewSystem()
-	sys.DB = db
-	return sys, err
-}
 
 func NewSystem() *System {
 	return &System{}
 }
 
 type System struct {
-	*sql.DB
+	*PlanDB
 }
 
 func (me *System) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -38,3 +32,38 @@ var index = `
 `
 
 var tpl = template.Must(template.New("").Parse(index))
+
+var changesTbl = struct {
+	CREATE, INSERT string
+}{
+	`CREATE TABLE changes (
+        title VARCHAR(64) NULL,
+        description VARCHAR(2048) NULL
+    )`,
+	"INSERT INTO changes(title, description) values(?,?)",
+}
+
+type Change struct {
+	Title       string
+	Description string
+}
+
+func NewPlanDB(filename string) (*PlanDB, error) {
+	db, err := sql.Open("sqlite3", filename)
+	if _, err = db.Exec(changesTbl.CREATE); err != nil {
+		if !strings.Contains(err.Error(), "already exists") {
+			return nil, err
+		}
+	}
+
+	mdb := &PlanDB{DB: db}
+	stmt, err := db.Prepare(changesTbl.INSERT)
+	mdb.InsertChange = stmt
+	return mdb, err
+}
+
+type PlanDB struct {
+	*sql.DB
+
+	InsertChange *sql.Stmt
+}

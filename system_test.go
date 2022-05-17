@@ -8,11 +8,13 @@ import (
 	"testing"
 )
 
-func Test(t *testing.T) {
+func TestSystem(t *testing.T) {
+	sys := NewSystem()
+	db, _ := NewPlanDB("/tmp/test.db")
+	sys.PlanDB = db
+
 	w := httptest.NewRecorder()
 	r := httptest.NewRequest("GET", "/", nil)
-
-	sys, _ := NewSystemLite("/tmp/test.db")
 	sys.ServeHTTP(w, r)
 	defer sys.Close()
 
