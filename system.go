@@ -39,11 +39,12 @@ func (me *System) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case "POST":
 		switch r.PostFormValue("submit") {
 		case "add":
-			me.InsertChange.Exec(
-				uuid.Must(uuid.NewRandom()).String(),
-				r.PostFormValue("title"),
-				r.PostFormValue("description"),
-			)
+			c := Change{
+				UUID:        uuid.Must(uuid.NewRandom()),
+				Title:       r.PostFormValue("title"),
+				Description: r.PostFormValue("description"),
+			}
+			_ = me.Create(&c)
 
 		case "delete":
 			_, err := me.DeleteChange.Exec(
@@ -59,6 +60,10 @@ func (me *System) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	default:
 		w.WriteHeader(405)
 	}
+}
+
+func (me *System) Create(v interface{}) error {
+	return me.insert(v)
 }
 
 var index = `
@@ -91,14 +96,11 @@ var tpl = template.Must(template.New("").Parse(index))
 
 type Change struct {
 	uuid.UUID
-	Title
-	Description
+	Title       string
+	Description string
 }
 
 func (me *Change) Ref() string {
 	v := me.UUID.String()
 	return v[len(v)-5:]
 }
-
-type Title string
-type Description string

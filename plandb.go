@@ -2,6 +2,7 @@ package miniplan
 
 import (
 	"database/sql"
+	"fmt"
 	"strings"
 )
 
@@ -27,6 +28,17 @@ type PlanDB struct {
 
 	InsertChange *sql.Stmt
 	DeleteChange *sql.Stmt
+}
+
+func (me *PlanDB) insert(v interface{}) (err error) {
+	switch v := v.(type) {
+	case *Change:
+		_, err = me.InsertChange.Exec(v.UUID, v.Title, v.Description)
+	default:
+		err = fmt.Errorf("insert %T", v)
+	}
+	return
+
 }
 
 var changesTbl = struct {
