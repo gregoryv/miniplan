@@ -6,6 +6,7 @@ import (
 
 	"github.com/gregoryv/cmdline"
 	"github.com/gregoryv/miniplan"
+	"github.com/gregoryv/miniplan/webui"
 )
 
 func main() {
@@ -22,7 +23,8 @@ func main() {
 		log.Fatal(err)
 	}
 	sys.PlanDB = db
-	if err := http.ListenAndServe(bind, sys); err != nil {
+	ui := webui.NewUI(sys)
+	if err := http.ListenAndServe(bind, ui); err != nil {
 		log.Fatal(err)
 	}
 }
