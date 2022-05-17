@@ -1,0 +1,16 @@
+[Unit]
+Description=miniplan daemon script
+After=auditd.service systemd-user-sessions.service time-sync.target
+
+[Service]
+User=gregory
+TimeoutStartSec=0
+Type=simple
+KillMode=process
+WorkingDirectory=/var/opt/miniplan
+ExecStart=/home/gregory/bin/miniplan
+Restart=always
+LimitNOFILE=5555
+
+[Install]
+WantedBy=multi-user.target

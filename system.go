@@ -37,6 +37,7 @@ var index = `
 <!doctype html>
 
 <html>
+<head><title>miniplan</title></head>
 <body>
 <ul>
 {{range .Changes}}
