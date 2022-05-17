@@ -1,10 +1,8 @@
 package miniplan
 
 import (
-	"database/sql"
 	"html/template"
 	"net/http"
-	"strings"
 
 	"github.com/google/uuid"
 	_ "github.com/mattn/go-sqlite3"
@@ -91,18 +89,6 @@ Ref: <input name="uuid"><input type=submit name=submit value=delete>
 
 var tpl = template.Must(template.New("").Parse(index))
 
-var changesTbl = struct {
-	CREATE, INSERT, DELETE string
-}{
-	CREATE: `CREATE TABLE changes (
-        uuid VARCHAR(36) NULL,
-        title VARCHAR(64) NULL,
-        description VARCHAR(2048) NULL
-    )`,
-	INSERT: "INSERT INTO changes(uuid, title, description) values(?,?,?)",
-	DELETE: "DELETE FROM changes WHERE uuid LIKE ?",
-}
-
 type Change struct {
 	uuid.UUID
 	Title
@@ -112,30 +98,6 @@ type Change struct {
 func (me *Change) Ref() string {
 	v := me.UUID.String()
 	return v[len(v)-5:]
-}
-
-func NewPlanDB(filename string) (*PlanDB, error) {
-	db, err := sql.Open("sqlite3", filename)
-	if _, err = db.Exec(changesTbl.CREATE); err != nil {
-		if !strings.Contains(err.Error(), "already exists") {
-			return nil, err
-		}
-	}
-
-	mdb := &PlanDB{DB: db}
-	stmt, err := db.Prepare(changesTbl.INSERT)
-	mdb.InsertChange = stmt
-
-	stmt, err = db.Prepare(changesTbl.DELETE)
-	mdb.DeleteChange = stmt
-	return mdb, err
-}
-
-type PlanDB struct {
-	*sql.DB
-
-	InsertChange *sql.Stmt
-	DeleteChange *sql.Stmt
 }
 
 type Title string
