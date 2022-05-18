@@ -2,10 +2,22 @@ package miniplan
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 
 	"github.com/google/uuid"
 	_ "github.com/mattn/go-sqlite3"
 )
+
+func NewDemo(dir string) (*System, func()) {
+	db, _ := NewPlanDB(filepath.Join(dir, "demo.db"))
+	sys := &System{db}
+	sys.Create(&Change{
+		Title:       "Create new changes",
+		Description: "Simple todo list",
+	})
+	return sys, func() { db.Close(); os.RemoveAll(dir) }
+}
 
 func NewSystem() *System {
 	return &System{}
