@@ -11,7 +11,8 @@ import (
 
 func NewDemo(dir string) (*System, func()) {
 	db, _ := NewPlanDB(filepath.Join(dir, "demo.db"))
-	sys := &System{db}
+	sys := NewSystem()
+	sys.PlanDB = db
 	sys.Create(&Change{
 		Title:       "Create new changes",
 		Description: "Simple todo list",
