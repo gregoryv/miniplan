@@ -12,7 +12,7 @@ import (
 func NewRouter(api *API) *mux.Router {
 	r := mux.NewRouter()
 	r.HandleFunc("/", api.Read).Methods("GET")
-
+	r.HandleFunc("/", api.Delete).Methods("DELETE")
 	return r
 }
 
@@ -50,5 +50,17 @@ func (me *API) Update(w http.ResponseWriter, r *http.Request) {
 }
 
 func (me *API) Delete(w http.ResponseWriter, r *http.Request) {
+	var del DeleteQuery
+	json.NewDecoder(r.Body).Decode(&del)
+	if err := me.System.Remove(del.IdSuffix); err != nil {
+		w.WriteHeader(400)
+		json.NewEncoder(w).Encode(map[string]any{
+			"error": err.Error(),
+		})
+		return
+	}
+}
 
+type DeleteQuery struct {
+	IdSuffix string
 }
