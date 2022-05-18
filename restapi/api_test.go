@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/gregoryv/miniplan"
+	"github.com/gregoryv/miniplan/spec"
 )
 
 func TestAPI(t *testing.T) {
@@ -19,7 +20,7 @@ func TestAPI(t *testing.T) {
 	api := NewAPI(sys)
 
 	t.Run("Create", func(t *testing.T) {
-		w, r := newRequest("GET", "/", nil)
+		w, r := newRequest("", "/", nil)
 		api.Create(w, r)
 		got := w.Result()
 		if exp := 201; got.StatusCode != exp {
@@ -28,11 +29,13 @@ func TestAPI(t *testing.T) {
 	})
 
 	t.Run("Delete", func(t *testing.T) {
+		t.Log(spec.YRA05.String())
+
 		var buf bytes.Buffer
 		json.NewEncoder(&buf).Encode(map[string]any{
 			"IdSuffix": "0091",
 		})
-		w, r := newRequest("DELETE", "/", &buf)
+		w, r := newRequest("", "/", &buf)
 
 		api.Delete(w, r)
 		got := w.Result()
