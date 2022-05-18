@@ -8,4 +8,7 @@ require (
 	github.com/mattn/go-sqlite3 v1.14.13
 )
 
-require github.com/gregoryv/nexus v0.5.1 // indirect
+require (
+	github.com/gorilla/mux v1.8.0 // indirect
+	github.com/gregoryv/nexus v0.5.1 // indirect
+)
