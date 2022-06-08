@@ -15,6 +15,7 @@ func main() {
 		bind     = cli.Option("-b, --bind").String(":9180")
 		planfile = cli.Option("-f, --plan-file").String("plan.db")
 	)
+	cli.Parse()
 	log.SetFlags(0)
 
 	sys := miniplan.NewSystem()
