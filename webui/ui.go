@@ -63,7 +63,11 @@ var index = `
 <!doctype html>
 
 <html>
-<head><title>miniplan</title></head>
+<head><title>miniplan</title>
+<style>
+body { width: 21cm; margin:0 auto;}
+</style>
+</head>
 <body>
 <pre>
 {{range .Changes}}
