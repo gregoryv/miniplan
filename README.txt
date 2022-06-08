@@ -13,3 +13,22 @@ over the life span of a software solution.
     $ go install github.com/gregoryv/cmd/miniplan@latest
     $ miniplan -h
 
+
+## Problems
+
+Multiple solutions exist to one problem, knowing why a certain
+solution was rejected is equally important to why another was choosen.
+
+Solutions(features) disconnected from a problem are difficult to
+design correctly.
+
+Solutions without requirements tend to drift away from the original
+problem, thus creating new problems.
+
+Analysing solutions and requirements in isolation is not enough,
+engineers must also see the whole picture to align and value
+requirements against each other.
+
+Solutions may introduce new problems, the problematic sum of these
+should not exceed the original problem.
+
