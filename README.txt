@@ -8,12 +8,6 @@ problem statements, elicit requirements and manage them effectively
 over the life span of a software solution.
 
 
-## Quick start
-
-    $ go install github.com/gregoryv/cmd/miniplan@latest
-    $ miniplan -h
-
-
 ## Problems
 
 Multiple solutions exist to one problem, knowing why a certain
@@ -32,3 +26,15 @@ requirements against each other.
 Solutions may introduce new problems, the problematic sum of these
 should not exceed the original problem.
 
+Problem statement change over time, software developers must
+understand the change to appropriately adapt current solution.
+
+
+## Solution 1 - miniplan web service
+
+Web service for editing changes.
+
+### Quick start
+
+    $ go install github.com/gregoryv/cmd/miniplan@latest
+    $ miniplan -h
