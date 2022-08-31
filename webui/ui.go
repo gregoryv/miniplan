@@ -68,11 +68,19 @@ var index = `
 body { width: 21cm; margin:0 auto;}
 </style>
 </head>
-<body>
-<pre>
+<body id="body">
+<div id="move">Edit | add
+focus
+</div>
+
 {{range .Changes}}
-{{.Title}}<b>{{.Ref}}</b>{{end}}
-</pre>
+<div class="entry">
+<a name="{{.Ref}}"></a>
+<a href="#{{.Ref}}" class="idref">{{.Ref}}</a> {{.Title}}<br>
+<p>{{.Description}}</p>
+</div>
+{{end}}
+
 
 <hr>
 <form method="POST">
@@ -88,17 +96,41 @@ Ref: <input name="uuid"><input type=submit name=submit value=delete>
 
  <style>
       body { max-width: 21cm }
-  b { float: right; color: lightgray; font-weight: normal; font-size: 16px}
-  .right { float: right }
-  b:hover { color: blue; cursor: pointer; text-decoration: none }
+  p { font-family: sans-serif }
+  .entry { min-height: 1em }
+  .idref { color: lightgray; font-weight: normal; font-size: 16px; margin-left: -3.6em}
+  .idref:hover { color: blue; cursor: pointer; text-decoration: none }
   pre { line-height: 1.3em }
   .sprint { text-align: right; border-bottom: 1px dashed #000; width: 100% }
   .sprint > div { font-family: monospace; float: right; background-color: #fff; margin-top: -10px; padding-left: 30px }
   pre > div:hover { background-color: #f2f2f2 }
   strike { color: #e2e2e2 }
   strike:hover { color: #000000 }  
-</style>
 
+
+			#move {
+				height: 40px;
+				width: 100px;
+				position: relative;
+				top: 0;
+				left: -180px;
+				background: lightcyan;
+			}
+		</style>
+		
+		<script type="text/javascript">
+			var div = document.getElementById('move');
+
+            var nodeList = document.querySelectorAll(".entry");
+            for (var i = 0, length = nodeList.length; i < length; i++) {
+                var el = nodeList[i];
+// todo fix this
+                el.addEventListener('mouseenter',function(e) {	
+				   div.style.top = el.pageY+"px";
+                });
+			}
+
+		</script>
 </body>
 </html>
 `
