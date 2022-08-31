@@ -24,8 +24,8 @@ func main() {
 		log.Fatal(err)
 	}
 	sys.PlanDB = db
-	ui := webui.NewUI(sys)
-	if err := http.ListenAndServe(bind, ui); err != nil {
+	_ = webui.NewUI(sys)
+	if err := http.ListenAndServe(bind, nil); err != nil {
 		log.Fatal(err)
 	}
 }

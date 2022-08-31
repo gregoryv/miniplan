@@ -1,0 +1,9 @@
+div.entry {}
+
+div.entry:hover {
+    background-color: #f2f2f2;
+}
+
+div.entry form {
+    float: right;
+}

@@ -1,6 +1,7 @@
 package webui
 
 import (
+	_ "embed"
 	"net/http"
 	"text/template"
 
@@ -9,7 +10,10 @@ import (
 )
 
 func NewUI(sys *System) *UI {
-	return &UI{System: sys}
+	http.HandleFunc("/static/theme.css", serveTheme)
+	ui := &UI{System: sys}
+	http.Handle("/", ui)
+	return ui
 }
 
 type UI struct {
@@ -36,6 +40,7 @@ func (me *UI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(500)
 			w.Write([]byte(err.Error()))
 		}
+
 	case "POST":
 		switch r.PostFormValue("submit") {
 		case "add":
@@ -64,19 +69,27 @@ var index = `
 
 <html>
 <head><title>miniplan</title>
-<style>
-body { width: 21cm; margin:0 auto;}
-</style>
+
+<link rel="stylesheet" type="text/css" href="/static/theme.css" />
 </head>
 <body id="body">
-<div id="move">Edit | add
-focus
-</div>
 
 {{range .Changes}}
 <div class="entry">
-<a name="{{.Ref}}"></a>
-<a href="#{{.Ref}}" class="idref">{{.Ref}}</a> {{.Title}}<br>
+
+<a href="#{{.Ref}}" class="idref">#</a>
+
+<form method="POST">
+<input type=hidden name="uuid" value="{{.Ref}}">
+<input type=hidden name=submit value=delete>
+<input type=submit value=D>
+</form>
+
+
+<a name="{{.Ref}}">{{.Ref}}</a>
+{{.Title}}<br>
+
+
 <p>{{.Description}}</p>
 </div>
 {{end}}
@@ -94,45 +107,16 @@ Description: <br>
 Ref: <input name="uuid"><input type=submit name=submit value=delete>
 </form>
 
- <style>
-      body { max-width: 21cm }
-  p { font-family: sans-serif }
-  .entry { min-height: 1em }
-  .idref { color: lightgray; font-weight: normal; font-size: 16px; margin-left: -3.6em}
-  .idref:hover { color: blue; cursor: pointer; text-decoration: none }
-  pre { line-height: 1.3em }
-  .sprint { text-align: right; border-bottom: 1px dashed #000; width: 100% }
-  .sprint > div { font-family: monospace; float: right; background-color: #fff; margin-top: -10px; padding-left: 30px }
-  pre > div:hover { background-color: #f2f2f2 }
-  strike { color: #e2e2e2 }
-  strike:hover { color: #000000 }  
-
-
-			#move {
-				height: 40px;
-				width: 100px;
-				position: relative;
-				top: 0;
-				left: -180px;
-				background: lightcyan;
-			}
-		</style>
-		
-		<script type="text/javascript">
-			var div = document.getElementById('move');
-
-            var nodeList = document.querySelectorAll(".entry");
-            for (var i = 0, length = nodeList.length; i < length; i++) {
-                var el = nodeList[i];
-// todo fix this
-                el.addEventListener('mouseenter',function(e) {	
-				   div.style.top = el.pageY+"px";
-                });
-			}
-
-		</script>
 </body>
 </html>
 `
 
 var tpl = template.Must(template.New("").Parse(index))
+
+func serveTheme(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("content-type", "text/css")
+	w.Write(theme)
+}
+
+//go:embed assets/theme.css
+var theme []byte
