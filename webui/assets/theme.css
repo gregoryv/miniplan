@@ -1,5 +1,5 @@
 body {
-    width: 21cm;
+    min-width: 21cm;
     margin: 0 auto;
 }
 
@@ -7,25 +7,47 @@ h1 {
     text-align: center;
 }
 
-div.entry {}
+.row {
+    width:100%;
+    display: flex;
+    height: 100px;
+    margin: 10px;
+}
 
-div.entry:hover {
-    background-color: #f2f2f2;
+.left {
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+}
+
+.right {
+    width: 200px;height: 100px; margin: 10px;
+}
+
+.mid {
+    flex:1; height: 100px;margin: 10px;
+}
+
+.entry:hover {
+    background-color: #fafafa;
 }
 
 /* entry tools */
-.entryTools {
+.right {
     float: right;
     filter: grayscale(1);
     opacity: 0.2;    
 }
 
-.entry:hover .entryTools {
+.entry:hover .right {
     filter: grayscale(0);
     opacity: 1;
 }
 
+form.one {
+    float: left;
+}
 
-p {
-    margin-left: 4em;
+form.one input[type=submit] {
+    float: left;
 }

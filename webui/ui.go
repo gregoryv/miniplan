@@ -82,39 +82,50 @@ var index = `
 
 {{range .Changes}}
 
-<div class="entry">
+<div class="row entry">
 
+<div class="left">
 <a href="#{{.Ref}}" class="idref">#</a>
+<a name="{{.Ref}}">{{.Ref}}</a>
+</div>
 
-<div class="entryTools">
+<div class="mid">
+{{.Title}}<br>
+<p>{{.Description}}</p>
+</div>
+
+
+<div class="right">
+<form method="POST" class="one">
 <input type=hidden name=submit value=insert>
 <input type=submit value=I>
-
-<form method="POST">
+</form>
+<form method="POST" class="one">
 <input type=hidden name="uuid" value="{{.Ref}}">
 <input type=hidden name=submit value=delete>
 <input type=submit value=D>
 </form>
 </div>
 
-<a name="{{.Ref}}">{{.Ref}}</a>
-{{.Title}}<br>
-
-
-<p>{{.Description}}</p>
 </div>
 {{end}}
 
-<br clear="all"/>
+
+<div class="row">
+<div class="left"></div>
+<div class="mid">
 
 <hr>
+<br>
 <form method="POST">
 Change: <input name="title"><br>
 Description: <br>
 <textarea cols="50" rows="20" name="description"></textarea>
 <input type=submit name=submit value=add>
 </form>
-
+</div>
+<div class="right"></div>
+</div>
 </body>
 </html>
 `
