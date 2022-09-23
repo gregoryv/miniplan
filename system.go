@@ -22,17 +22,22 @@ func NewDemo(dir string) (*System, func()) {
 }
 
 func NewSystem() *System {
-	return &System{}
+	return &System{
+		ViewOrder: make([]*Change, 0),
+	}
 }
 
 type System struct {
 	*PlanDB
+
+	ViewOrder []*Change
 }
 
 func (me *System) Create(v interface{}) error {
 	switch v := v.(type) {
 	case *Change:
 		v.UUID = uuid.Must(uuid.NewRandom())
+		me.ViewOrder = append(me.ViewOrder, v)
 	}
 	return me.insert(v)
 }
