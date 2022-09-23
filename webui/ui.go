@@ -11,6 +11,8 @@ import (
 
 func NewUI(sys *System) *UI {
 	http.HandleFunc("/static/theme.css", serveTheme)
+	http.HandleFunc("/static/tools.js", serveTools)
+
 	ui := &UI{System: sys}
 	http.Handle("/", ui)
 	return ui
@@ -71,20 +73,29 @@ var index = `
 <head><title>miniplan</title>
 
 <link rel="stylesheet" type="text/css" href="/static/theme.css" />
+<script src="/static/tools.js"></script>
+
 </head>
 <body id="body">
 
+<h1>Miniplan</h1>
+
 {{range .Changes}}
+
 <div class="entry">
 
 <a href="#{{.Ref}}" class="idref">#</a>
+
+<div class="entryTools">
+<input type=hidden name=submit value=insert>
+<input type=submit value=I>
 
 <form method="POST">
 <input type=hidden name="uuid" value="{{.Ref}}">
 <input type=hidden name=submit value=delete>
 <input type=submit value=D>
 </form>
-
+</div>
 
 <a name="{{.Ref}}">{{.Ref}}</a>
 {{.Title}}<br>
@@ -94,6 +105,7 @@ var index = `
 </div>
 {{end}}
 
+<br clear="all"/>
 
 <hr>
 <form method="POST">
@@ -103,15 +115,13 @@ Description: <br>
 <input type=submit name=submit value=add>
 </form>
 
-<form method="POST">
-Ref: <input name="uuid"><input type=submit name=submit value=delete>
-</form>
-
 </body>
 </html>
 `
 
 var tpl = template.Must(template.New("").Parse(index))
+
+// static assets
 
 func serveTheme(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("content-type", "text/css")
@@ -120,3 +130,11 @@ func serveTheme(w http.ResponseWriter, r *http.Request) {
 
 //go:embed assets/theme.css
 var theme []byte
+
+func serveTools(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("content-type", "text/javascript")
+	w.Write(tools)
+}
+
+//go:embed assets/tools.js
+var tools []byte

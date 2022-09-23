@@ -1,9 +1,31 @@
+body {
+    width: 21cm;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+}
+
 div.entry {}
 
 div.entry:hover {
     background-color: #f2f2f2;
 }
 
-div.entry form {
+/* entry tools */
+.entryTools {
     float: right;
+    filter: grayscale(1);
+    opacity: 0.2;    
+}
+
+.entry:hover .entryTools {
+    filter: grayscale(0);
+    opacity: 1;
+}
+
+
+p {
+    margin-left: 4em;
 }
