@@ -25,10 +25,11 @@ func NewDemo(dir string) (*Plan, func()) {
 }
 
 func NewPlan(dir string) *Plan {
-	return &Plan{
+	p := &Plan{
 		rootdir: dir,
 		Changes: make([]*Change, 0),
 	}
+	return p
 }
 
 type Plan struct {
@@ -38,19 +39,16 @@ type Plan struct {
 	Changes []*Change
 }
 
-func (me *Plan) SetDatabase(db *PlanDB) {
-	me.PlanDB = db
+func (me *Plan) Load() {
 	// load data into memory
-	rows, _ := db.Query("SELECT * FROM changes")
-	var changes []*Change
-	for rows.Next() {
-		var c Change
-		rows.Scan(&c.UUID, &c.Title, &c.Description)
-		changes = append(changes, &c)
-		log.Printf("load %s %s", c.Ref(), c.Title)
+	fh, err := os.Open(filepath.Join(me.rootdir, "index.json"))
+	if err != nil {
+		log.Fatal(err)
 	}
-	me.Changes = changes
-	rows.Close()
+	defer fh.Close()
+	if err := json.NewDecoder(fh).Decode(&me.Changes); err != nil {
+		log.Print("Load ", err)
+	}
 }
 
 func (me *Plan) Save() error {

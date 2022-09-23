@@ -16,6 +16,7 @@ func main() {
 		bind     = cli.Option("-b, --bind").String(":9180")
 		planfile = cli.Option("-f, --plan-file").String("plan.db")
 	)
+	_ = planfile
 	cli.Parse()
 	log.SetFlags(0)
 
@@ -27,13 +28,6 @@ func main() {
 	defer out.Close()
 	log.SetOutput(out)
 
-	// open database
-	log.Print("open ", planfile)
-	db, err := miniplan.NewPlanDB(planfile)
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	// create plan
 	log.Print("create plan")
 	dir, err := os.Getwd()
@@ -42,7 +36,7 @@ func main() {
 		dir = "."
 	}
 	plan := miniplan.NewPlan(dir)
-	plan.SetDatabase(db)
+	plan.Load()
 
 	// init web user interface
 	_ = webui.NewUI(plan)
