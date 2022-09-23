@@ -1,6 +1,7 @@
 body {
     min-width: 21cm;
     margin: 0 auto;
+    max-width: 30cm;
 }
 
 h1 {
@@ -54,14 +55,6 @@ input[type=submit] {
 .entry:hover input[type=submit] {
     filter: grayscale(0);
     opacity: 1;
-}
-
-form.one {
-    float: left;
-}
-
-form.one input[type=submit] {
-    float: left;
 }
 
 input.one-letter[type=submit] {
