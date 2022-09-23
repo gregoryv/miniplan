@@ -25,38 +25,43 @@ var index = `
 <div class="row entry">
 
 <div class="left">
+<form method="POST">
+<input type=hidden name=submit value=add>
+<input type=hidden name=priority value="{{.InsertPrio}}" >
+<input type=submit value="+" class="insert" title=insert>
+</form>
 <a href="#{{.Ref}}" class="idref">#</a>
 <a name="{{.Ref}}">{{.Ref}}</a>
 </div>
 
 <div class="mid">
-<form method="POST" class="task">
+<form method="POST" class="change">
 <input type=hidden name="uuid" value="{{.Ref}}">
 <input type=text name="title" value="{{.Title}}" /><br>
 <textarea rows="{{.LineHeight}}" name="description">{{.Description}}</textarea>
 
+<table>
+<tr>
+<td>
 <input type=number min=1 name=priority value="{{.Priority}}"/>
 <input type=hidden name=submit value=update>
-<input type=submit value=S class="save btn" title=save>
+<input type=submit value=Save class="save btn" title=save>
 </form>
-</div>
+</td>
 
-
-<div class="right">
-
-<form method="POST" class="one">
-<input type=hidden name=submit value=add>
-<input type=hidden name=priority value="{{.InsertPrio}}" >
-<input type=submit value=I class="insert btn" title=insert>
-</form>
-
-<form method="POST" class="one">
+<td>
+<form method="POST">
 <input type=hidden name="uuid" value="{{.Ref}}">
 <input type=hidden name=submit value=delete>
-<input type=submit value=D class="delete btn" title=delete>
+<input type=submit value=Delete class="delete btn">
 </form>
+</td>
+</tr>
+</table>
+
 
 </div>
+
 
 </div>
 {{end}}
@@ -64,18 +69,14 @@ var index = `
 
 <div class="row">
 
-<div class="left"></div>
-<div class="mid"></div>
-<div class="right">
-
-<div class="right">
-<form method="POST" class="one">
+<div class="left">
+<form method="POST">
 <input type=hidden name=submit value=add>
-<input type=submit value=I >
 <input type=hidden name=priority value="{{.LastPriority}}" >
+<input type=submit value="+" class="insert" title=insert>
 </form>
-
 </div>
+
 </div>
 </body>
 </html>

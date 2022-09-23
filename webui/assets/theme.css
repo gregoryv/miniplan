@@ -8,12 +8,12 @@ h1 {
     text-align: center;
 }
 
-.task input[type=text] {
+.change input[type=text] {
     width: 100%;
     border: 0;
 }
 
-.task textarea {
+.change textarea {
     width: 100%;
     border: 0;
     resize: none;
@@ -25,9 +25,9 @@ h1 {
     margin: 10px;
 }
 
-.left {
+.left {    
     width: 100px;
-    margin: 10px;
+    margin-top: -20px;
 }
 
 .right {
@@ -36,39 +36,33 @@ h1 {
 }
 
 .mid {
-    flex:1; height: 100px;margin: 10px;
+    flex:1;
 }
 
 .entry {
     padding-bottom: 1em;
 }
-.entry:hover {
-    background-color: #fafafa;
-}
 
-/* entry tools */
-input[type=submit] {
-    filter: grayscale(1);
-    opacity: 0.2;    
-}
-
-.entry:hover input[type=submit] {
-    filter: grayscale(0);
-    opacity: 1;
-}
 
 .entry input[name=priority] {
     width: 70px;
 }
 
-input.save[type=submit] {
-    float: right;
-    margin-right: -50px;
-    margin-top: -23px;
+
+input[name=title] {
+    margin-top: 3px;
+    font-size: 1em;
 }
 
-.btn {
-    text-align: center;
-    margin-top: 3px;
-    width: 30px;
+input.delete {
+    margin-left: 100px;
+}
+
+input.delete:hover {
+    color: red;
+}
+
+input.insert {
+    margin-bottom: 3px;
+    padding: 0 0;
 }
