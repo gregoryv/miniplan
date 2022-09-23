@@ -32,7 +32,6 @@ func NewPlan(dir string) *Plan {
 
 type Plan struct {
 	rootdir string
-	*PlanDB
 
 	Changes []*Change
 }
