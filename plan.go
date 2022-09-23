@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/google/uuid"
 	_ "github.com/mattn/go-sqlite3"
@@ -74,34 +75,35 @@ func (me *Plan) Create(v interface{}) error {
 		v.UUID = uuid.Must(uuid.NewRandom())
 		me.Changes = append(me.Changes, v)
 	}
-	defer func() {
-		if err := me.Save(); err != nil {
-			log.Print(err)
-		}
-	}()
-
-	return me.insert(v)
+	return me.Save()
 }
 
 func (me *Plan) Remove(ref string) error {
 	if ref == "" {
 		return fmt.Errorf("empty ref")
 	}
-	if _, err := me.DeleteChange.Exec("%" + ref); err != nil {
-		return err
+	var i int
+	for i, _ = range me.Changes {
+		if strings.HasSuffix(me.Changes[i].UUID.String(), ref) {
+			break
+		}
 	}
-	return me.Save()
+	me.Changes = append(me.Changes[:i], me.Changes[i+1:]...)
+	return nil
 }
 
-func (me *Plan) Update(ref string, c *Change) error {
+func (me *Plan) Update(ref string, in *Change) error {
 	if ref == "" {
 		return fmt.Errorf("empty ref")
 	}
-	_, err := me.UpdateChange.Exec(c.Title, c.Description, "%"+ref)
-	if err != nil {
-		return err
+	for _, c := range me.Changes {
+		if strings.HasSuffix(c.UUID.String(), ref) {
+			c.Title = in.Title
+			c.Description = in.Description
+			break
+		}
 	}
-	return me.Save()
+	return nil
 }
 
 type Change struct {
