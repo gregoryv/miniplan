@@ -25,14 +25,9 @@ type UI struct {
 func (me *UI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
-		rows, _ := me.Query("SELECT * FROM changes")
-
-		defer rows.Close()
 		var changes []ChangeView
-		for rows.Next() {
-			var c Change
-			rows.Scan(&c.UUID, &c.Title, &c.Description)
-			changes = append(changes, ChangeView{c})
+		for _, c := range me.Changes {
+			changes = append(changes, ChangeView{*c})
 		}
 		m := map[string]interface{}{
 			"Changes": changes,
