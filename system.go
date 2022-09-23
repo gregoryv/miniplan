@@ -33,6 +33,21 @@ type System struct {
 	ViewOrder []*Change
 }
 
+func (me *System) SetDatabase(db *PlanDB) {
+	me.PlanDB = db
+	// load data into memory
+	rows, _ := db.Query("SELECT * FROM changes")
+	var changes []*Change
+	for rows.Next() {
+		var c Change
+		rows.Scan(&c.UUID, &c.Title, &c.Description)
+		changes = append(changes, &c)
+		log.Printf("load %s %s", c.Ref(), c.Title)
+	}
+	me.ViewOrder = changes
+	rows.Close()
+}
+
 func (me *System) Create(v interface{}) error {
 	switch v := v.(type) {
 	case *Change:
