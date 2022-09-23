@@ -11,18 +11,15 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
-	_ "github.com/mattn/go-sqlite3"
 )
 
 func NewDemo(dir string) (*Plan, func()) {
-	db, _ := NewPlanDB(filepath.Join(dir, "demo.db"))
 	sys := NewPlan(dir)
-	sys.PlanDB = db
 	sys.Create(&Change{
 		Title:       "Create new changes",
 		Description: "Simple todo list",
 	})
-	return sys, func() { db.Close(); os.RemoveAll(dir) }
+	return sys, func() { os.RemoveAll(dir) }
 }
 
 func NewPlan(dir string) *Plan {
@@ -89,7 +86,7 @@ func (me *Plan) Remove(ref string) error {
 		}
 	}
 	me.Changes = append(me.Changes[:i], me.Changes[i+1:]...)
-	return nil
+	return me.Save()
 }
 
 func (me *Plan) Update(ref string, in *Change) error {
@@ -103,7 +100,7 @@ func (me *Plan) Update(ref string, in *Change) error {
 			break
 		}
 	}
-	return nil
+	return me.Save()
 }
 
 type Change struct {

@@ -12,11 +12,9 @@ import (
 
 func main() {
 	var (
-		cli      = cmdline.NewBasicParser()
-		bind     = cli.Option("-b, --bind").String(":9180")
-		planfile = cli.Option("-f, --plan-file").String("plan.db")
+		cli  = cmdline.NewBasicParser()
+		bind = cli.Option("-b, --bind").String(":9180")
 	)
-	_ = planfile
 	cli.Parse()
 	log.SetFlags(0)
 
