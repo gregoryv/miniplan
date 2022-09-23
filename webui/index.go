@@ -34,24 +34,28 @@ var index = `
 <input type=hidden name="uuid" value="{{.Ref}}">
 <input type=text name="title" value="{{.Title}}" /><br>
 <textarea rows="{{.LineHeight}}" name="description">{{.Description}}</textarea>
-<input name=priority value="{{.Priority}}"/>
+
+<input type=number min=1 name=priority value="{{.Priority}}"/>
 <input type=hidden name=submit value=update>
-<input type=submit value=S class="one-letter">
+<input type=submit value=S class="save btn" title=save>
 </form>
 </div>
 
 
 <div class="right">
+
 <form method="POST" class="one">
 <input type=hidden name=submit value=add>
-<input type=submit value=I>
 <input type=hidden name=priority value="{{.InsertPrio}}" >
+<input type=submit value=I class="insert btn" title=insert>
 </form>
+
 <form method="POST" class="one">
 <input type=hidden name="uuid" value="{{.Ref}}">
 <input type=hidden name=submit value=delete>
-<input type=submit value=D>
+<input type=submit value=D class="delete btn" title=delete>
 </form>
+
 </div>
 
 </div>
@@ -67,7 +71,7 @@ var index = `
 <div class="right">
 <form method="POST" class="one">
 <input type=hidden name=submit value=add>
-<input type=submit value=I>
+<input type=submit value=I >
 <input type=hidden name=priority value="{{.LastPriority}}" >
 </form>
 
