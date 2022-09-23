@@ -3,6 +3,7 @@ package webui
 import (
 	_ "embed"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/gregoryv/miniplan"
@@ -54,9 +55,11 @@ func (me *UI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				w.Write([]byte(err.Error()))
 			}
 		case "update":
+			prio, _ := strconv.ParseUint(r.PostFormValue("priority"), 10, 32)
 			c := Change{
 				Title:       r.PostFormValue("title"),
 				Description: r.PostFormValue("description"),
+				Priority:    uint32(prio),
 			}
 			err := me.Update(r.PostFormValue("uuid"), &c)
 			if err != nil {

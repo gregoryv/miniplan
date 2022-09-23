@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 
 	"github.com/google/uuid"
@@ -95,9 +96,11 @@ func (me *Plan) Update(ref string, in *Change) error {
 		if strings.HasSuffix(c.UUID.String(), ref) {
 			c.Title = in.Title
 			c.Description = in.Description
+			c.Priority = in.Priority
 			break
 		}
 	}
+	sort.Sort(ByPriority(me.Changes))
 	return me.Save()
 }
 
@@ -105,9 +108,17 @@ type Change struct {
 	UUID        uuid.UUID
 	Title       string
 	Description string
+
+	Priority uint32
 }
 
 func (me *Change) Ref() string {
 	v := me.UUID.String()
 	return v[len(v)-5:]
 }
+
+type ByPriority []*Change
+
+func (b ByPriority) Len() int           { return len(b) }
+func (b ByPriority) Swap(i, j int)      { b[i], b[j] = b[j], b[i] }
+func (b ByPriority) Less(i, j int) bool { return b[i].Priority < b[j].Priority }

@@ -34,6 +34,7 @@ var index = `
 <input type=hidden name="uuid" value="{{.Ref}}">
 <input type=text name="title" value="{{.Title}}" /><br>
 <textarea rows="{{.LineHeight}}" name="description">{{.Description}}</textarea>
+<input name=priority value="{{.Priority}}"/>
 <input type=hidden name=submit value=update>
 <input type=submit value=S class="one-letter">
 </form>
