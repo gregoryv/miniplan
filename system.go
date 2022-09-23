@@ -1,6 +1,7 @@
 package miniplan
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"os"
@@ -12,7 +13,7 @@ import (
 
 func NewDemo(dir string) (*System, func()) {
 	db, _ := NewPlanDB(filepath.Join(dir, "demo.db"))
-	sys := NewSystem()
+	sys := NewSystem(dir)
 	sys.PlanDB = db
 	sys.Create(&Change{
 		Title:       "Create new changes",
@@ -21,13 +22,15 @@ func NewDemo(dir string) (*System, func()) {
 	return sys, func() { db.Close(); os.RemoveAll(dir) }
 }
 
-func NewSystem() *System {
+func NewSystem(dir string) *System {
 	return &System{
+		rootdir:   dir,
 		ViewOrder: make([]*Change, 0),
 	}
 }
 
 type System struct {
+	rootdir string
 	*PlanDB
 
 	ViewOrder []*Change
@@ -48,12 +51,28 @@ func (me *System) SetDatabase(db *PlanDB) {
 	rows.Close()
 }
 
+func (me *System) Save() error {
+	w, err := os.Create(filepath.Join(me.rootdir, "index.json"))
+	if err != nil {
+		return err
+	}
+	defer w.Close()
+	log.Print(me.ViewOrder[0])
+	return json.NewEncoder(w).Encode(me.ViewOrder)
+}
+
 func (me *System) Create(v interface{}) error {
 	switch v := v.(type) {
 	case *Change:
 		v.UUID = uuid.Must(uuid.NewRandom())
 		me.ViewOrder = append(me.ViewOrder, v)
 	}
+	defer func() {
+		if err := me.Save(); err != nil {
+			log.Print(err)
+		}
+	}()
+
 	return me.insert(v)
 }
 
@@ -75,7 +94,7 @@ func (me *System) Update(ref string, c *Change) error {
 }
 
 type Change struct {
-	uuid.UUID
+	UUID        uuid.UUID
 	Title       string
 	Description string
 }

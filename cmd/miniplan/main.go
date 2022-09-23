@@ -36,7 +36,13 @@ func main() {
 
 	// create system
 	log.Print("create system")
-	sys := miniplan.NewSystem()
+	dir, err := os.Getwd()
+	if err != nil {
+		log.Print(err)
+		dir = "."
+	}
+
+	sys := miniplan.NewSystem(dir)
 	sys.SetDatabase(db)
 
 	// init web user interface
