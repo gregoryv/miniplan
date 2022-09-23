@@ -43,14 +43,14 @@ func (me *Plan) Load() {
 		log.Fatal(err)
 	}
 	defer fh.Close()
-	if err := json.NewDecoder(fh).Decode(&me.Changes); err != nil {
+	if err := json.NewDecoder(fh).Decode(me); err != nil {
 		log.Print("Load ", err)
 	}
 }
 
 func (me *Plan) Save() error {
 	var buf bytes.Buffer
-	if err := json.NewEncoder(&buf).Encode(me.Changes); err != nil {
+	if err := json.NewEncoder(&buf).Encode(me); err != nil {
 		return err
 	}
 
