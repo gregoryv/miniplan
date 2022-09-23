@@ -16,21 +16,21 @@ func NewRouter(api *API) *mux.Router {
 	return r
 }
 
-func NewAPI(sys *System) *API {
+func NewAPI(sys *Plan) *API {
 	api := &API{
-		System: sys,
+		Plan: sys,
 	}
 	return api
 }
 
 type API struct {
-	*System
+	*Plan
 }
 
 func (me *API) Create(w http.ResponseWriter, r *http.Request) {
 	var c Change
 	json.NewDecoder(r.Body).Decode(&c)
-	if err := me.System.Create(&c); err != nil {
+	if err := me.Plan.Create(&c); err != nil {
 		w.WriteHeader(400)
 		return
 	}
@@ -52,7 +52,7 @@ func (me *API) Update(w http.ResponseWriter, r *http.Request) {
 func (me *API) Delete(w http.ResponseWriter, r *http.Request) {
 	var del DeleteQuery
 	json.NewDecoder(r.Body).Decode(&del)
-	if err := me.System.Remove(del.IdSuffix); err != nil {
+	if err := me.Plan.Remove(del.IdSuffix); err != nil {
 		w.WriteHeader(400)
 		json.NewEncoder(w).Encode(map[string]any{
 			"error": err.Error(),

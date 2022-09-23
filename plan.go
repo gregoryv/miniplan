@@ -11,9 +11,9 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func NewDemo(dir string) (*System, func()) {
+func NewDemo(dir string) (*Plan, func()) {
 	db, _ := NewPlanDB(filepath.Join(dir, "demo.db"))
-	sys := NewSystem(dir)
+	sys := NewPlan(dir)
 	sys.PlanDB = db
 	sys.Create(&Change{
 		Title:       "Create new changes",
@@ -22,21 +22,21 @@ func NewDemo(dir string) (*System, func()) {
 	return sys, func() { db.Close(); os.RemoveAll(dir) }
 }
 
-func NewSystem(dir string) *System {
-	return &System{
+func NewPlan(dir string) *Plan {
+	return &Plan{
 		rootdir:   dir,
 		ViewOrder: make([]*Change, 0),
 	}
 }
 
-type System struct {
+type Plan struct {
 	rootdir string
 	*PlanDB
 
 	ViewOrder []*Change
 }
 
-func (me *System) SetDatabase(db *PlanDB) {
+func (me *Plan) SetDatabase(db *PlanDB) {
 	me.PlanDB = db
 	// load data into memory
 	rows, _ := db.Query("SELECT * FROM changes")
@@ -51,7 +51,7 @@ func (me *System) SetDatabase(db *PlanDB) {
 	rows.Close()
 }
 
-func (me *System) Save() error {
+func (me *Plan) Save() error {
 	w, err := os.Create(filepath.Join(me.rootdir, "index.json"))
 	if err != nil {
 		return err
@@ -61,7 +61,7 @@ func (me *System) Save() error {
 	return json.NewEncoder(w).Encode(me.ViewOrder)
 }
 
-func (me *System) Create(v interface{}) error {
+func (me *Plan) Create(v interface{}) error {
 	switch v := v.(type) {
 	case *Change:
 		v.UUID = uuid.Must(uuid.NewRandom())
@@ -76,7 +76,7 @@ func (me *System) Create(v interface{}) error {
 	return me.insert(v)
 }
 
-func (me *System) Remove(ref string) error {
+func (me *Plan) Remove(ref string) error {
 	if ref == "" {
 		return fmt.Errorf("empty ref")
 	}
@@ -84,7 +84,7 @@ func (me *System) Remove(ref string) error {
 	return err
 }
 
-func (me *System) Update(ref string, c *Change) error {
+func (me *Plan) Update(ref string, c *Change) error {
 	if ref == "" {
 		return fmt.Errorf("empty ref")
 	}

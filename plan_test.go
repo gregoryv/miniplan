@@ -6,7 +6,7 @@ import (
 	. "github.com/gregoryv/miniplan/spec"
 )
 
-func TestSystem(t *testing.T) {
+func TestPlan(t *testing.T) {
 	sys, cleanup := NewDemo(t.TempDir())
 	defer cleanup()
 

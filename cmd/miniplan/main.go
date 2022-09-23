@@ -34,19 +34,18 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// create system
-	log.Print("create system")
+	// create plan
+	log.Print("create plan")
 	dir, err := os.Getwd()
 	if err != nil {
 		log.Print(err)
 		dir = "."
 	}
-
-	sys := miniplan.NewSystem(dir)
-	sys.SetDatabase(db)
+	plan := miniplan.NewPlan(dir)
+	plan.SetDatabase(db)
 
 	// init web user interface
-	_ = webui.NewUI(sys)
+	_ = webui.NewUI(plan)
 	if err := http.ListenAndServe(bind, nil); err != nil {
 		log.Fatal(err)
 	}

@@ -9,17 +9,17 @@ import (
 	. "github.com/gregoryv/miniplan"
 )
 
-func NewUI(sys *System) *UI {
+func NewUI(sys *Plan) *UI {
 	http.HandleFunc("/static/theme.css", serveTheme)
 	http.HandleFunc("/static/tools.js", serveTools)
 
-	ui := &UI{System: sys}
+	ui := &UI{Plan: sys}
 	http.Handle("/", ui)
 	return ui
 }
 
 type UI struct {
-	*miniplan.System
+	*miniplan.Plan
 }
 
 func (me *UI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
