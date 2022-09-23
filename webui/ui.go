@@ -2,6 +2,7 @@ package webui
 
 import (
 	_ "embed"
+	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -27,11 +28,21 @@ func (me *UI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
 		var changes []ChangeView
-		for _, c := range me.Changes {
-			changes = append(changes, ChangeView{*c})
+		var lastPrio uint32
+		for i, c := range me.Changes {
+			v := ChangeView{
+				Change: *c,
+			}
+			if i > 0 {
+				v.InsertPrio = c.Priority - (c.Priority-me.Changes[i-1].Priority)/2
+			}
+			changes = append(changes, v)
+
+			lastPrio = c.Priority
 		}
 		m := map[string]interface{}{
-			"Changes": changes,
+			"Changes":      changes,
+			"LastPriority": lastPrio + 10,
 		}
 		err := tpl.Execute(w, m)
 		if err != nil {
@@ -42,9 +53,14 @@ func (me *UI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case "POST":
 		switch r.PostFormValue("submit") {
 		case "add":
+			prio, err := strconv.ParseUint(r.PostFormValue("priority"), 10, 32)
+			if err != nil {
+				log.Print(err)
+			}
 			c := Change{
 				Title:       r.PostFormValue("title"),
 				Description: r.PostFormValue("description"),
+				Priority:    uint32(prio),
 			}
 			_ = me.Create(&c)
 
@@ -76,6 +92,8 @@ func (me *UI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 type ChangeView struct {
 	Change
+
+	InsertPrio uint32
 }
 
 func (me *ChangeView) LineHeight() int {

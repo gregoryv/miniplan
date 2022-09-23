@@ -70,6 +70,7 @@ func (me *Plan) Create(v interface{}) error {
 	case *Change:
 		v.UUID = uuid.Must(uuid.NewRandom())
 		me.Changes = append(me.Changes, v)
+		sort.Sort(ByPriority(me.Changes))
 	}
 	return me.Save()
 }
