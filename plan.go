@@ -1,8 +1,10 @@
 package miniplan
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -24,8 +26,8 @@ func NewDemo(dir string) (*Plan, func()) {
 
 func NewPlan(dir string) *Plan {
 	return &Plan{
-		rootdir:   dir,
-		ViewOrder: make([]*Change, 0),
+		rootdir: dir,
+		Changes: make([]*Change, 0),
 	}
 }
 
@@ -33,7 +35,7 @@ type Plan struct {
 	rootdir string
 	*PlanDB
 
-	ViewOrder []*Change
+	Changes []*Change
 }
 
 func (me *Plan) SetDatabase(db *PlanDB) {
@@ -47,25 +49,32 @@ func (me *Plan) SetDatabase(db *PlanDB) {
 		changes = append(changes, &c)
 		log.Printf("load %s %s", c.Ref(), c.Title)
 	}
-	me.ViewOrder = changes
+	me.Changes = changes
 	rows.Close()
 }
 
 func (me *Plan) Save() error {
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(me.Changes); err != nil {
+		return err
+	}
+
+	var tidy bytes.Buffer
+	json.Indent(&tidy, buf.Bytes(), "", "  ")
 	w, err := os.Create(filepath.Join(me.rootdir, "index.json"))
 	if err != nil {
 		return err
 	}
 	defer w.Close()
-	log.Print(me.ViewOrder[0])
-	return json.NewEncoder(w).Encode(me.ViewOrder)
+	_, err = io.Copy(w, &tidy)
+	return err
 }
 
 func (me *Plan) Create(v interface{}) error {
 	switch v := v.(type) {
 	case *Change:
 		v.UUID = uuid.Must(uuid.NewRandom())
-		me.ViewOrder = append(me.ViewOrder, v)
+		me.Changes = append(me.Changes, v)
 	}
 	defer func() {
 		if err := me.Save(); err != nil {
@@ -80,17 +89,21 @@ func (me *Plan) Remove(ref string) error {
 	if ref == "" {
 		return fmt.Errorf("empty ref")
 	}
-	_, err := me.DeleteChange.Exec("%" + ref)
-	return err
+	if _, err := me.DeleteChange.Exec("%" + ref); err != nil {
+		return err
+	}
+	return me.Save()
 }
 
 func (me *Plan) Update(ref string, c *Change) error {
 	if ref == "" {
 		return fmt.Errorf("empty ref")
 	}
-	n, err := me.UpdateChange.Exec(c.Title, c.Description, "%"+ref)
-	log.Println("rows affected", n)
-	return err
+	_, err := me.UpdateChange.Exec(c.Title, c.Description, "%"+ref)
+	if err != nil {
+		return err
+	}
+	return me.Save()
 }
 
 type Change struct {
