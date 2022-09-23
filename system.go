@@ -2,6 +2,7 @@ package miniplan
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 
@@ -41,6 +42,15 @@ func (me *System) Remove(ref string) error {
 		return fmt.Errorf("empty ref")
 	}
 	_, err := me.DeleteChange.Exec("%" + ref)
+	return err
+}
+
+func (me *System) Update(ref string, c *Change) error {
+	if ref == "" {
+		return fmt.Errorf("empty ref")
+	}
+	n, err := me.UpdateChange.Exec(c.Title, c.Description, "%"+ref)
+	log.Println("rows affected", n)
 	return err
 }
 

@@ -20,6 +20,9 @@ func NewPlanDB(filename string) (*PlanDB, error) {
 
 	stmt, err = db.Prepare(changesTbl.DELETE)
 	mdb.DeleteChange = stmt
+
+	stmt, err = db.Prepare(changesTbl.UPDATE)
+	mdb.UpdateChange = stmt
 	return mdb, err
 }
 
@@ -28,6 +31,7 @@ type PlanDB struct {
 
 	InsertChange *sql.Stmt
 	DeleteChange *sql.Stmt
+	UpdateChange *sql.Stmt
 }
 
 func (me *PlanDB) insert(v interface{}) (err error) {
@@ -42,7 +46,7 @@ func (me *PlanDB) insert(v interface{}) (err error) {
 }
 
 var changesTbl = struct {
-	CREATE, INSERT, DELETE string
+	CREATE, INSERT, DELETE, UPDATE string
 }{
 	CREATE: `CREATE TABLE changes (
         uuid VARCHAR(36) NULL,
@@ -51,4 +55,5 @@ var changesTbl = struct {
     )`,
 	INSERT: "INSERT INTO changes(uuid, title, description) values(?,?,?)",
 	DELETE: "DELETE FROM changes WHERE uuid LIKE ?",
+	UPDATE: "UPDATE changes SET title = ?, description = ? WHERE uuid LIKE ?",
 }

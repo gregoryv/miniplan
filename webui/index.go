@@ -30,8 +30,13 @@ var index = `
 </div>
 
 <div class="mid">
-{{.Title}}<br>
-<p>{{.Description}}</p>
+<form method="POST" class="task">
+<input type=hidden name="uuid" value="{{.Ref}}">
+<input type=text name="title" value="{{.Title}}" /><br>
+<textarea rows="{{.LineHeight}}" name="description">{{.Description}}</textarea>
+<input type=hidden name=submit value=update>
+<input type=submit value=S class="one-letter">
+</form>
 </div>
 
 
