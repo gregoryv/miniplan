@@ -23,11 +23,10 @@ func NewDemo(dir string) (*Plan, func()) {
 }
 
 func NewPlan(dir string) *Plan {
-	p := &Plan{
+	return &Plan{
 		rootdir: dir,
 		Changes: make([]*Change, 0),
 	}
-	return p
 }
 
 type Plan struct {
