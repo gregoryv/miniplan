@@ -37,12 +37,10 @@
 
 <div class="row entry">
 
-  <div class="left">    
-    {{.Index}}. <a name="{{.Ref}}"></a>
-  </div>
+  <div class="left index">{{.Index}}. <a name="{{.Ref}}"></a></div>
 
-  <div class="mid">
-    <form method="POST" class="change" id="f{{.Ref}}">
+  <div class="mid entry">
+    <form method="POST" id="f{{.Ref}}">
       <input type="hidden" name="uuid" value="{{.Ref}}">
       <input type="hidden" name="submit" value="update">      
 
@@ -61,7 +59,7 @@
   </div>
 
   <div class="right">
-    <input type="number" min="0" name="priority" value="{{.Priority}}" form="f{{.Ref}}"/>
+    <input type="number" min="0" name="priority" title="priority" value="{{.Priority}}" form="f{{.Ref}}"/>
     <br>
     <button type="submit" form="f{{.Ref}}" class="save">save</button><br>
     <button type="submit" form="removeForm{{.Ref}}" class="remove">remove</button>    

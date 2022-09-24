@@ -13,40 +13,23 @@
   <nav>
     <a href="/">Plan</a> - <b>Removed</b>
   </nav>
-  
 
+  <ol class="removed">
 {{range .Removed}}
 
-<form method="POST" id="deleteForm{{.Ref}}">
-  <input type="hidden" name="uuid" value="{{.Ref}}">
-  <input type="hidden" name=submit value=delete>
-</form>
+<li>
+  <a name="{{.Ref}}"></a>
 
-<div class="row entry">
+  <span>{{.Title}}</span> <a href="#{{.Ref}}" title="priority" class="idref">#{{.Ref}}</a>
+  <button type="submit" form="deleteForm{{.Ref}}" class="delete">delete</button>
 
-  <div class="left">    
-    {{.Index}}. <a name="{{.Ref}}"></a>
-  </div>
+    <form method="POST" id="deleteForm{{.Ref}}">
+      <input type="hidden" name="uuid" value="{{.Ref}}">
+      <input type="hidden" name=submit value=delete>
+    </form>
+</li>
 
-  <div class="mid">
-    <table>
-      <tr>
-	<td>{{.Title}}</td>
-	<td class="ref"><a href="#{{.Ref}}" class="idref">#{{.Ref}}</a></td>
-      </tr>
-    </table>
-    <pre>{{.Description}}</pre>
-  </div>
-
-  <div class="right">
-    <button type="submit" form="deleteForm{{.Ref}}" class="delete">delete</button>    
-  </div>
-
-</div>
-
-
-</div>
 {{end}}
-
+</ol>
 
 </body></html>
