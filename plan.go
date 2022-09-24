@@ -27,6 +27,7 @@ func NewPlan(dir string) *Plan {
 	return &Plan{
 		rootdir: dir,
 		Entries: make([]*Entry, 0),
+		Removed: make([]*Entry, 0),
 	}
 }
 
@@ -34,6 +35,7 @@ type Plan struct {
 	rootdir string
 
 	Entries []*Entry
+	Removed []*Entry
 }
 
 func (me *Plan) Load() {
@@ -85,6 +87,7 @@ func (me *Plan) Remove(ref string) error {
 			break
 		}
 	}
+	me.Removed = append(me.Removed, me.Entries[i])
 	me.Entries = append(me.Entries[:i], me.Entries[i+1:]...)
 	return me.Save()
 }

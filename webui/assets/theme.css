@@ -77,18 +77,18 @@ button.save {
     right: -45px;    
 }
 
-button.delete {
+button.remove {
     position: relative;    
     color: #727272;    
     background-color: inherit;
     border-width: 0px;
     float: right;
     top: 3px;
-    right: -57px;
+    right: -64px;
     padding: 0 0;
 }
 
-button.delete:hover {
+button.remove:hover {
     color: red;
 }
 

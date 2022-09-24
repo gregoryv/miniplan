@@ -18,9 +18,9 @@
       <input type=hidden name=priority value="{{.InsertPrio}}" >
 </form>
 
-<form method="POST" id="deleteForm{{.Ref}}">
+<form method="POST" id="removeForm{{.Ref}}">
       <input type=hidden name="uuid" value="{{.Ref}}">
-      <input type=hidden name=submit value=delete>
+      <input type=hidden name=submit value=remove>
 </form>
 
 <div class="row insert">
@@ -46,7 +46,7 @@
       
 
       <input type=hidden name=submit value=update>
-      <button type=submit form="deleteForm{{.Ref}}" class="delete btn">delete</button>
+      <button type=submit form="removeForm{{.Ref}}" class="remove btn">remove</button>
       <button type=submit form="f{{.Ref}}" class=save>Save</button>          
     </form>
   </div>

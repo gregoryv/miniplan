@@ -65,7 +65,7 @@ func (me *UI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			}
 			_ = me.Create(&c)
 
-		case "delete":
+		case "remove":
 			err := me.Remove(r.PostFormValue("uuid"))
 			if err != nil {
 				w.WriteHeader(500)
