@@ -23,7 +23,10 @@ h1 {
 .row {
     width:100%;
     display: flex;
-    margin-bottom: 4px;
+}
+
+.row.insert {
+    margin-bottom: 14px;
 }
 
 .row.insert:hover hr {
@@ -37,7 +40,6 @@ h1 {
 
 .right {
     width: 80px;
-/*    border: 1px solid red;*/
 }
 
 .mid {
@@ -50,17 +52,15 @@ h1 {
 }
 
 .entry input[name=priority] {
-    width: 70px;
-}
-
-.mid form table {
-    width: 100%;
+    width: 50px;
 }
 
 input[name=title] {
     margin-top: 3px;
     font-size: 1em;
 }
+
+
 
 button.insert {
     color: #727272;
@@ -71,13 +71,19 @@ button.insert:hover {
     text-decoration: underline;
 }
 
+button.save {
+    position: relative;    
+    float: right;
+    right: -45px;    
+}
+
 button.delete {
+    position: relative;    
     color: #727272;    
     background-color: inherit;
     border-width: 0px;
     float: right;
-    position: relative;
-    top: -3px;
+    top: 3px;
     right: -57px;
     padding: 0 0;
 }
