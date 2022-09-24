@@ -3,8 +3,8 @@
 <html>
   
 <head><title>miniplan</title>
-<link rel="stylesheet" type="text/css" href="/static/theme.css" />
-<script src="/static/tools.js"></script>
+  <link rel="stylesheet" type="text/css" href="/static/theme.css" />
+  <script src="/static/tools.js"></script>
 </head>
 
 <body id="body">
@@ -41,7 +41,7 @@
 </td>
 
 <td>
-  <form method="POST">
+  <form method="POST" onsubmit="return confirm('Are you sure? there is no undo!');">
     <input type=hidden name="uuid" value="{{.Ref}}">
     <input type=hidden name=submit value=delete>
     <input type=submit value=Delete class="delete btn">
