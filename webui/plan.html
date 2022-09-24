@@ -38,14 +38,24 @@
 <div class="row entry">
 
   <div class="left">    
-    {{.Index}}. <a name="{{.Ref}}"></a><a href="#{{.Ref}}" class="idref">#{{.Ref}}</a>
+    {{.Index}}. <a name="{{.Ref}}"></a>
   </div>
 
   <div class="mid">
     <form method="POST" class="change" id="f{{.Ref}}">
       <input type="hidden" name="uuid" value="{{.Ref}}">
       <input type="hidden" name="submit" value="update">      
-      <input type="text" name="title" value="{{.Title}}" /><br>
+
+      <table>
+	<tr>
+	  <td>
+	    <input type="text" name="title" value="{{.Title}}" />
+	  </td>
+	  <td class="ref">
+	    <sup><a href="#{{.Ref}}" class="idref">#{{.Ref}}</a></sup>
+	  </td>
+	</tr>
+      </table>
       <textarea rows="{{.LineHeight}}" name="description">{{.Description}}</textarea>
     </form>
   </div>
