@@ -14,19 +14,19 @@
 {{range .Changes}}
 
 <form method="POST" id="insertForm{{.Ref}}">
-      <input type=hidden name=submit value=add>
-      <input type=hidden name=priority value="{{.InsertPrio}}" >
+      <input type="hidden" name="submit" value="add">
+      <input type="hidden" name="priority" value="{{.InsertPrio}}" >
 </form>
 
 <form method="POST" id="removeForm{{.Ref}}">
-      <input type=hidden name="uuid" value="{{.Ref}}">
-      <input type=hidden name=submit value=remove>
+      <input type="hidden" name="uuid" value="{{.Ref}}">
+      <input type="hidden" name=submit value=remove>
 </form>
 
 <div class="row insert">
   <div class="mid"><hr class="separator"></div>
   <div class="right">
-      <button type=submit form="insertForm{{.Ref}}" class="insert">insert</button>    
+      <button type="submit" form="insertForm{{.Ref}}">insert</button>    
   </div>
 </div>
 
@@ -40,19 +40,18 @@
 
   <div class="mid">
     <form method="POST" class="change" id="f{{.Ref}}">
-      <input type=hidden name="uuid" value="{{.Ref}}">
-      <input type=text name="title" value="{{.Title}}" /><br>
+      <input type="hidden" name="uuid" value="{{.Ref}}">
+      <input type="hidden" name="submit" value="update">      
+      <input type="text" name="title" value="{{.Title}}" /><br>
       <textarea rows="{{.LineHeight}}" name="description">{{.Description}}</textarea>
-      
-
-      <input type=hidden name=submit value=update>
-      <button type=submit form="removeForm{{.Ref}}" class="remove btn">remove</button>
-      <button type=submit form="f{{.Ref}}" class=save>Save</button>          
     </form>
   </div>
 
   <div class="right">
     <input type=number min=0 name=priority value="{{.Priority}}" form="f{{.Ref}}"/>
+    <br>
+    <button type=submit form="f{{.Ref}}" class=save>save</button><br>
+    <button type=submit form="removeForm{{.Ref}}" class="remove">remove</button>    
   </div>
 
 </div>

@@ -39,7 +39,7 @@ h1 {
 }
 
 .right {
-    width: 80px;
+    width: 120px;
 }
 
 .mid {
@@ -69,23 +69,6 @@ button {
 
 button:hover {
     color: black;
-}
-
-button.save {
-    position: relative;    
-    float: right;
-    right: -45px;    
-}
-
-button.remove {
-    position: relative;    
-    color: #727272;    
-    background-color: inherit;
-    border-width: 0px;
-    float: right;
-    top: 3px;
-    right: -64px;
-    padding: 0 0;
 }
 
 button.remove:hover {
