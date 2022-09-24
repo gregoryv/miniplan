@@ -4,9 +4,7 @@ body {
     background-color: #fafafa;
 }
 
-h1 {
-    text-align: center;
-}
+h1 {    text-align: center; }
 
 .change input[type=text] {
     width: 99%;
@@ -25,36 +23,15 @@ h1 {
     display: flex;
 }
 
-.row.insert {
-    margin: 14px 0px;
-}
+.row.insert {    margin: 14px 0px;}
+.row.insert:hover hr {    border-color: black;}
 
-.row.insert:hover hr {
-    border-color: black;
-}
+.left  { width: 100px;       margin: 4px;}
+.mid   {  flex: 1;     margin-right: 4px;}
+.right { width: 120px; padding-left: 10px;}
 
-.left {    
-    width: 100px;
-    margin: 4px;
-}
-
-.right {
-    width: 120px;
-    padding-left: 10px;
-}
-
-.mid {
-    flex:1;
-    margin-right: 4px;
-}
-
-.entry {
-    background-color: white;
-}
-
-.entry .right{
-    background-color: #fafafa;
-}
+.entry {    background-color: white;}
+.entry .right{    background-color: #fafafa;}
 
 .entry input[name=priority] {
     width: 50px;
@@ -70,9 +47,7 @@ a.idref {
     text-decoration: none;
     font-family: sans-serif;
 }
-a.idref:hover {
-    text-decoration: underline;
-}
+a.idref:hover { text-decoration: underline; }
 
 button {
     color: #727272;
@@ -80,13 +55,8 @@ button {
     border: 0;
 }
 
-button:hover {
-    color: black;
-}
-
-button.remove:hover {
-    color: red;
-}
+button:hover        { color: black; }
+button.remove:hover { color: red; }
 
 hr.separator {
     display: block;
