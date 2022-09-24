@@ -2,6 +2,7 @@ package webui
 
 import (
 	_ "embed"
+	"html/template"
 	"log"
 	"net/http"
 	"strconv"
@@ -99,3 +100,28 @@ type ChangeView struct {
 func (me *ChangeView) LineHeight() int {
 	return strings.Count(me.Description, "\n") + 3
 }
+
+// ----------------------------------------
+
+var tpl = template.Must(template.New("").Parse(indexHtml))
+
+//go:embed index.html
+var indexHtml string
+
+// static assets
+
+func serveTheme(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("content-type", "text/css")
+	w.Write(theme)
+}
+
+//go:embed assets/theme.css
+var theme []byte
+
+func serveTools(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("content-type", "text/javascript")
+	w.Write(tools)
+}
+
+//go:embed assets/tools.js
+var tools []byte
