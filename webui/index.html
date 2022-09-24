@@ -52,7 +52,7 @@
   </div>
 
   <div class="right">
-    <input type=number min=1 name=priority value="{{.Priority}}" form="f{{.Ref}}"/>
+    <input type=number min=0 name=priority value="{{.Priority}}" form="f{{.Ref}}"/>
   </div>
 
 </div>
@@ -63,7 +63,7 @@
 
 <form method="POST" id="lastInsertForm">
   <input type=hidden name=submit value=add>
-  <input type=hidden name=priority value="{{.LastPriority}}" >
+  <input type=hidden name=priority value="0" >
 </form>
 
 <div class="row insert">

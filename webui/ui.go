@@ -29,21 +29,21 @@ func (me *UI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
 		var changes []ChangeView
-		var lastPrio uint32
 		for i, c := range me.Changes {
 			v := ChangeView{
 				Change: *c,
 			}
+			// calculate middle prio between previous and current
+			v.InsertPrio = c.Priority + 10 // ie. above
 			if i > 0 {
-				v.InsertPrio = c.Priority - (c.Priority-me.Changes[i-1].Priority)/2
+				diff := (me.Changes[i-1].Priority - c.Priority) / 2
+				v.InsertPrio = c.Priority + diff
 			}
 			changes = append(changes, v)
-
-			lastPrio = c.Priority
 		}
 		m := map[string]interface{}{
 			"Changes":      changes,
-			"LastPriority": lastPrio + 10,
+			"LastPriority": 0,
 		}
 		err := tpl.Execute(w, m)
 		if err != nil {
