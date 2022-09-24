@@ -44,14 +44,16 @@
       <input type=text name="title" value="{{.Title}}" /><br>
       <textarea rows="{{.LineHeight}}" name="description">{{.Description}}</textarea>
       
-      <input type=number min=1 name=priority value="{{.Priority}}"/>
+
       <input type=hidden name=submit value=update>
       <button type=submit form="deleteForm{{.Ref}}" class="delete btn">delete</button>
       <button type=submit form="f{{.Ref}}">Save</button>          
     </form>
   </div>
 
-  <div class="right"></div>
+  <div class="right">
+    <input type=number min=1 name=priority value="{{.Priority}}" form="f{{.Ref}}"/>
+  </div>
 
 </div>
 
@@ -59,7 +61,7 @@
 </div>
 {{end}}
 
-<form method="POST">
+<form method="POST" id="lastInsertForm">
   <input type=hidden name=submit value=add>
   <input type=hidden name=priority value="{{.LastPriority}}" >
 </form>

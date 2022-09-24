@@ -53,6 +53,9 @@ h1 {
     width: 70px;
 }
 
+.mid form table {
+    width: 100%;
+}
 
 input[name=title] {
     margin-top: 3px;
