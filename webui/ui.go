@@ -19,6 +19,7 @@ func NewUI(sys *Plan) *UI {
 	}
 
 	r := mux.NewRouter()
+	r.HandleFunc("/favicon.ico", serveFavicon)
 	r.HandleFunc("/static/theme.css", serveTheme)
 	r.HandleFunc("/static/tools.js", serveTools)
 	r.HandleFunc("/removed", ui.serveRemoved).Methods("GET")
@@ -161,6 +162,14 @@ var (
 )
 
 // static assets
+
+func serveFavicon(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("content-type", "image/x-icon")
+	w.Write(faviconIco)
+}
+
+//go:embed assets/favicon.ico
+var faviconIco []byte
 
 func serveTheme(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("content-type", "text/css")
