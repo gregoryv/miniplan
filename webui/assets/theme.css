@@ -59,6 +59,15 @@ input[name=title] {
     font-size: 1em;
 }
 
+button.insert {
+    color: #727272;
+    background-color: inherit;
+    border: 0;
+}
+button.insert:hover {
+    text-decoration: underline;
+}
+
 button.delete {
     float: right;
     position: relative;
