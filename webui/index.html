@@ -48,10 +48,10 @@
   </div>
 
   <div class="right">
-    <input type=number min=0 name=priority value="{{.Priority}}" form="f{{.Ref}}"/>
+    <input type="number" min="0" name="priority" value="{{.Priority}}" form="f{{.Ref}}"/>
     <br>
-    <button type=submit form="f{{.Ref}}" class=save>save</button><br>
-    <button type=submit form="removeForm{{.Ref}}" class="remove">remove</button>    
+    <button type="submit" form="f{{.Ref}}" class="save">save</button><br>
+    <button type="submit" form="removeForm{{.Ref}}" class="remove">remove</button>    
   </div>
 
 </div>
@@ -61,14 +61,14 @@
 {{end}}
 
 <form method="POST" id="lastInsertForm">
-  <input type=hidden name=submit value=add>
-  <input type=hidden name=priority value="0" >
+  <input type="hidden" name="submit" value="add">
+  <input type="hidden" name="priority" value="0" >
 </form>
 
 <div class="row insert">
   <div class="mid"><hr class="separator"></div>
   <div class="right">
-    <button type=submit form="lastInsertForm" class="insert">insert</button>
+    <button type="submit" form="lastInsertForm" class="insert">insert</button>
   </div>
 </div>
 
