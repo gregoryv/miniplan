@@ -1,7 +1,7 @@
 body {
-    min-width: 21cm;
+    width: 21cm;
     margin: 0 auto;
-    max-width: 30cm;
+    background-color: #fafafa;
 }
 
 h1 {
@@ -9,40 +9,45 @@ h1 {
 }
 
 .change input[type=text] {
-    width: 100%;
+    width: 99%;
     border: 0;
 }
 
 .change textarea {
-    width: 100%;
+    width: 99%;
     border: 0;
     resize: none;
+    margin-bottom: 8px;
 }
 
 .row {
     width:100%;
     display: flex;
-    margin: 10px;
+    margin-bottom: 4px;
+}
+
+.row.insert:hover hr {
+    border-color: black;
 }
 
 .left {    
     width: 100px;
-    margin-top: -20px;
+    margin: 4px;
 }
 
 .right {
-    width: 30px;
-    margin: 10px;
+    width: 80px;
+/*    border: 1px solid red;*/
 }
 
 .mid {
     flex:1;
+    margin-right: 4px;
 }
 
 .entry {
     padding-bottom: 1em;
 }
-
 
 .entry input[name=priority] {
     width: 70px;
@@ -54,15 +59,24 @@ input[name=title] {
     font-size: 1em;
 }
 
-input.delete {
-    margin-left: 100px;
+button.delete {
+    float: right;
+    position: relative;
+    top: -3px;
+    right: -67px;
 }
 
-input.delete:hover {
+button.delete:hover {
     color: red;
 }
 
-input.insert {
-    margin-bottom: 3px;
+hr.separator {
+    display: block;
+    margin-top: 10px;
+    border: 1px dashed #727272;
+}
+
+form {
     padding: 0 0;
+    margin: 0 0;
 }

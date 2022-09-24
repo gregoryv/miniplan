@@ -98,7 +98,7 @@ type ChangeView struct {
 }
 
 func (me *ChangeView) LineHeight() int {
-	return strings.Count(me.Description, "\n") + 3
+	return strings.Count(me.Description, "\n") + 2
 }
 
 // ----------------------------------------

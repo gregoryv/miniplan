@@ -13,56 +13,61 @@
 
 {{range .Changes}}
 
-<div class="row entry">
-
-  <div class="left">
-    <form method="POST">
+<form method="POST" id="insertForm{{.Ref}}">
       <input type=hidden name=submit value=add>
       <input type=hidden name=priority value="{{.InsertPrio}}" >
-      <input type=submit value="+" class="insert" title=insert>
-    </form>
+</form>
+
+<form method="POST" id="deleteForm{{.Ref}}" onsubmit="return confirm('Are you sure? there is no undo!');">
+      <input type=hidden name="uuid" value="{{.Ref}}">
+      <input type=hidden name=submit value=delete>
+</form>
+
+<div class="row insert">
+  <div class="mid"><hr class="separator"></div>
+  <div class="right">
+      <button type=submit form="insertForm{{.Ref}}">+</button>    
+  </div>
+</div>
+
+
+<div class="row entry">
+
+  <div class="left">    
     <a href="#{{.Ref}}" class="idref">#</a>
     <a name="{{.Ref}}">{{.Ref}}</a>
   </div>
 
   <div class="mid">
-    <form method="POST" class="change">
+    <form method="POST" class="change" id="f{{.Ref}}">
       <input type=hidden name="uuid" value="{{.Ref}}">
       <input type=text name="title" value="{{.Title}}" /><br>
       <textarea rows="{{.LineHeight}}" name="description">{{.Description}}</textarea>
-
-      <table>
-	<tr>
-	  <td>
-	    <input type=number min=1 name=priority value="{{.Priority}}"/>
-	    <input type=hidden name=submit value=update>
-	    <input type=submit value=Save class="save btn" title=save>
+      
+      <input type=number min=1 name=priority value="{{.Priority}}"/>
+      <input type=hidden name=submit value=update>
+      <button type=submit form="deleteForm{{.Ref}}" class="delete btn">Delete</button>
+      <button type=submit form="f{{.Ref}}">Save</button>          
     </form>
-</td>
+  </div>
 
-<td>
-  <form method="POST" onsubmit="return confirm('Are you sure? there is no undo!');">
-    <input type=hidden name="uuid" value="{{.Ref}}">
-    <input type=hidden name=submit value=delete>
-    <input type=submit value=Delete class="delete btn">
-  </form>
-</td>
-</tr>
-</table>
+  <div class="right"></div>
+
 </div>
 
 
 </div>
 {{end}}
 
+<form method="POST">
+  <input type=hidden name=submit value=add>
+  <input type=hidden name=priority value="{{.LastPriority}}" >
+</form>
 
-<div class="row">
-  <div class="left">
-    <form method="POST">
-      <input type=hidden name=submit value=add>
-      <input type=hidden name=priority value="{{.LastPriority}}" >
-      <input type=submit value="+" class="insert" title=insert>
-    </form>
+<div class="row insert">
+  <div class="mid"><hr class="separator"></div>
+  <div class="right">
+    <button type=submit form="lastInsertForm">+</button>
   </div>
 </div>
 
