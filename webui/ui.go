@@ -127,13 +127,17 @@ func (me *UI) serveRemoved(w http.ResponseWriter, r *http.Request) {
 func (me *UI) editRemoved(w http.ResponseWriter, r *http.Request) {
 	switch r.PostFormValue("submit") {
 	case "delete":
-		err := me.Delete(r.PostFormValue("uuid"))
-		if err != nil {
+		if err := me.Delete(r.PostFormValue("uuid")); err != nil {
 			w.WriteHeader(500)
 			w.Write([]byte(err.Error()))
 		}
-		// todo restore
+	case "restore":
+		if err := me.Restore(r.PostFormValue("uuid")); err != nil {
+			w.WriteHeader(500)
+			w.Write([]byte(err.Error()))
+		}
 	}
+
 	http.Redirect(w, r, "/removed", 303)
 }
 

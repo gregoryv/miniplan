@@ -21,11 +21,15 @@
       <a name="{{.Ref}}"></a>
 
       <span>{{.Title}}</span> <a href="#{{.Ref}}" title="priority" class="idref">#{{.Ref}}</a>
-      <button type="submit" form="deleteForm{{.Ref}}" class="delete">delete</button>
+      <button type="submit" form="restoreForm{{.Ref}}">restore</button> <button type="submit" form="deleteForm{{.Ref}}" class="delete">delete</button>
 
       <form method="POST" id="deleteForm{{.Ref}}">
 	<input type="hidden" name="uuid" value="{{.Ref}}">
 	<input type="hidden" name=submit value=delete>
+      </form>
+      <form method="POST" id="restoreForm{{.Ref}}">
+	<input type="hidden" name="uuid" value="{{.Ref}}">
+	<input type="hidden" name=submit value=restore>
       </form>
     </li>{{end}}
   </ol>
