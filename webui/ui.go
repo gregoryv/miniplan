@@ -30,9 +30,9 @@ func (me *UI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case "GET":
 		switch r.URL.Path {
 		case "/":
-			var changes []ChangeView
+			var changes []EntryView
 			for i, c := range me.Entries {
-				v := ChangeView{
+				v := EntryView{
 					Entry: *c,
 					Index: i + 1,
 				}
@@ -58,9 +58,9 @@ func (me *UI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			}
 
 		case "/removed":
-			var changes []ChangeView
+			var changes []EntryView
 			for i, c := range me.Removed {
-				v := ChangeView{
+				v := EntryView{
 					Entry: *c,
 					Index: i + 1,
 				}
@@ -117,14 +117,14 @@ func (me *UI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-type ChangeView struct {
+type EntryView struct {
 	Entry
 
 	InsertPrio uint32
 	Index      int
 }
 
-func (me *ChangeView) LineHeight() int {
+func (me *EntryView) LineHeight() int {
 	return strings.Count(me.Description, "\n") + 2
 }
 
