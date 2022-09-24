@@ -26,14 +26,14 @@ func NewDemo(dir string) (*Plan, func()) {
 func NewPlan(dir string) *Plan {
 	return &Plan{
 		rootdir: dir,
-		Changes: make([]*Entry, 0),
+		Entries: make([]*Entry, 0),
 	}
 }
 
 type Plan struct {
 	rootdir string
 
-	Changes []*Entry
+	Entries []*Entry
 }
 
 func (me *Plan) Load() {
@@ -69,8 +69,8 @@ func (me *Plan) Create(v interface{}) error {
 	switch v := v.(type) {
 	case *Entry:
 		v.UUID = uuid.Must(uuid.NewRandom())
-		me.Changes = append(me.Changes, v)
-		sort.Sort(ByPriority(me.Changes))
+		me.Entries = append(me.Entries, v)
+		sort.Sort(ByPriority(me.Entries))
 	}
 	return me.Save()
 }
@@ -80,12 +80,12 @@ func (me *Plan) Remove(ref string) error {
 		return fmt.Errorf("empty ref")
 	}
 	var i int
-	for i, _ = range me.Changes {
-		if strings.HasSuffix(me.Changes[i].UUID.String(), ref) {
+	for i, _ = range me.Entries {
+		if strings.HasSuffix(me.Entries[i].UUID.String(), ref) {
 			break
 		}
 	}
-	me.Changes = append(me.Changes[:i], me.Changes[i+1:]...)
+	me.Entries = append(me.Entries[:i], me.Entries[i+1:]...)
 	return me.Save()
 }
 
@@ -93,7 +93,7 @@ func (me *Plan) Update(ref string, in *Entry) error {
 	if ref == "" {
 		return fmt.Errorf("empty ref")
 	}
-	for _, c := range me.Changes {
+	for _, c := range me.Entries {
 		if strings.HasSuffix(c.UUID.String(), ref) {
 			c.Title = in.Title
 			c.Description = in.Description
@@ -101,7 +101,7 @@ func (me *Plan) Update(ref string, in *Entry) error {
 			break
 		}
 	}
-	sort.Sort(ByPriority(me.Changes))
+	sort.Sort(ByPriority(me.Entries))
 	return me.Save()
 }
 

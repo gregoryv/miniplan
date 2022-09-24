@@ -29,14 +29,14 @@ func (me *UI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
 		var changes []ChangeView
-		for i, c := range me.Changes {
+		for i, c := range me.Entries {
 			v := ChangeView{
 				Entry: *c,
 			}
 			// calculate middle prio between previous and current
 			v.InsertPrio = c.Priority + 10 // ie. above
 			if i > 0 {
-				diff := (me.Changes[i-1].Priority - c.Priority) / 2
+				diff := (me.Entries[i-1].Priority - c.Priority) / 2
 				v.InsertPrio = c.Priority + diff
 			}
 			changes = append(changes, v)
