@@ -69,10 +69,14 @@ button.insert:hover {
 }
 
 button.delete {
+    color: #727272;    
+    background-color: inherit;
+    border-width: 0px;
     float: right;
     position: relative;
     top: -3px;
-    right: -67px;
+    right: -57px;
+    padding: 0 0;
 }
 
 button.delete:hover {
