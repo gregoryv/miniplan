@@ -61,14 +61,14 @@ input[name=title] {
 }
 
 
-
-button.insert {
+button {
     color: #727272;
     background-color: inherit;
     border: 0;
 }
-button.insert:hover {
-    text-decoration: underline;
+
+button:hover {
+    color: black;
 }
 
 button.save {
