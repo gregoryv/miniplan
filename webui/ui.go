@@ -34,6 +34,7 @@ func (me *UI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			for i, c := range me.Entries {
 				v := ChangeView{
 					Entry: *c,
+					Index: i + 1,
 				}
 				// calculate middle prio between previous and current
 				v.InsertPrio = c.Priority + 10 // ie. above

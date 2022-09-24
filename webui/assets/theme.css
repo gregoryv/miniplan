@@ -65,6 +65,14 @@ input[name=title] {
     font-size: 1em;
 }
 
+a.idref {
+    color: black;
+    text-decoration: none;
+    font-family: sans-serif;
+}
+a.idref:hover {
+    text-decoration: underline;
+}
 
 button {
     color: #727272;
@@ -95,3 +103,5 @@ nav {
     margin-bottom: 24px;
     text-align: center;
 }
+
+   
