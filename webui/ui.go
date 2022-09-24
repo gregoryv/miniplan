@@ -28,30 +28,52 @@ type UI struct {
 func (me *UI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
-		var changes []ChangeView
-		for i, c := range me.Entries {
-			v := ChangeView{
-				Entry: *c,
+		switch r.URL.Path {
+		case "/":
+			var changes []ChangeView
+			for i, c := range me.Entries {
+				v := ChangeView{
+					Entry: *c,
+				}
+				// calculate middle prio between previous and current
+				v.InsertPrio = c.Priority + 10 // ie. above
+				if i > 0 {
+					diff := (me.Entries[i-1].Priority - c.Priority) / 2
+					v.InsertPrio = c.Priority + diff
+				}
+				changes = append(changes, v)
 			}
-			// calculate middle prio between previous and current
-			v.InsertPrio = c.Priority + 10 // ie. above
-			if i > 0 {
-				diff := (me.Entries[i-1].Priority - c.Priority) / 2
-				v.InsertPrio = c.Priority + diff
-			}
-			changes = append(changes, v)
-		}
-		m := map[string]interface{}{
-			"Changes":      changes,
-			"LastPriority": 0,
+			m := map[string]interface{}{
+				"Changes":      changes,
+				"LastPriority": 0,
 
-			"RemovedHref":  "/removed",
-			"RemovedCount": len(me.Removed),
-		}
-		err := plan.Execute(w, m)
-		if err != nil {
-			w.WriteHeader(500)
-			w.Write([]byte(err.Error()))
+				"RemovedHref":  "/removed",
+				"RemovedCount": len(me.Removed),
+			}
+
+			if err := plan.Execute(w, m); err != nil {
+				w.WriteHeader(500)
+				w.Write([]byte(err.Error()))
+			}
+
+		case "/removed":
+			var changes []ChangeView
+			for i, c := range me.Removed {
+				v := ChangeView{
+					Entry: *c,
+					Index: i + 1,
+				}
+				changes = append(changes, v)
+			}
+			m := map[string]interface{}{
+				"Removed":      changes,
+				"RemovedHref":  "/removed",
+				"RemovedCount": len(me.Removed),
+			}
+			if err := removed.Execute(w, m); err != nil {
+				w.WriteHeader(500)
+				w.Write([]byte(err.Error()))
+			}
 		}
 
 	case "POST":
@@ -98,6 +120,7 @@ type ChangeView struct {
 	Entry
 
 	InsertPrio uint32
+	Index      int
 }
 
 func (me *ChangeView) LineHeight() int {
@@ -106,10 +129,16 @@ func (me *ChangeView) LineHeight() int {
 
 // ----------------------------------------
 
-var plan = template.Must(template.New("").Parse(planHtml))
-
-//go:embed plan.html
-var planHtml string
+var (
+	//go:embed plan.html
+	planHtml string
+	plan     = template.Must(template.New("").Parse(planHtml))
+)
+var (
+	//go:embed removed.html
+	removedHtml string
+	removed     = template.Must(template.New("").Parse(removedHtml))
+)
 
 // static assets
 

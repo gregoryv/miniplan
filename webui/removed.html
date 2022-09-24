@@ -1,0 +1,44 @@
+<!doctype html>
+
+<html>
+  
+<head><title>miniplan</title>
+  <link rel="stylesheet" type="text/css" href="/static/theme.css" />
+  <script src="/static/tools.js"></script>
+</head>
+
+<body id="body">
+
+  <h1>Miniplan</h1>
+  <nav>
+    <a href="/">Plan</a> | Removed)
+  </nav>
+  
+
+{{range .Removed}}
+
+<div class="row entry">
+
+  <div class="left">
+    {{.Index}}
+    <a href="#{{.Ref}}" class="idref">#</a>
+    <a name="{{.Ref}}">{{.Ref}}</a>
+  </div>
+
+  <div class="mid">
+      {{.Title}}<br>
+      <pre>{{.Description}}</pre>
+  </div>
+
+  <div class="right">
+    <button type="submit" form="restoreForm{{.Ref}}" class="remove">restore</button>    
+  </div>
+
+</div>
+
+
+</div>
+{{end}}
+
+
+</body></html>
