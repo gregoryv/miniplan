@@ -18,7 +18,7 @@
       <input type=hidden name=priority value="{{.InsertPrio}}" >
 </form>
 
-<form method="POST" id="deleteForm{{.Ref}}" onsubmit="return confirm('Are you sure? there is no undo!');">
+<form method="POST" id="deleteForm{{.Ref}}">
       <input type=hidden name="uuid" value="{{.Ref}}">
       <input type=hidden name=submit value=delete>
 </form>

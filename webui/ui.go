@@ -31,7 +31,7 @@ func (me *UI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		var changes []ChangeView
 		for i, c := range me.Changes {
 			v := ChangeView{
-				Change: *c,
+				Entry: *c,
 			}
 			// calculate middle prio between previous and current
 			v.InsertPrio = c.Priority + 10 // ie. above
@@ -58,7 +58,7 @@ func (me *UI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			if err != nil {
 				log.Print(err)
 			}
-			c := Change{
+			c := Entry{
 				Title:       r.PostFormValue("title"),
 				Description: r.PostFormValue("description"),
 				Priority:    uint32(prio),
@@ -73,7 +73,7 @@ func (me *UI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			}
 		case "update":
 			prio, _ := strconv.ParseUint(r.PostFormValue("priority"), 10, 32)
-			c := Change{
+			c := Entry{
 				Title:       r.PostFormValue("title"),
 				Description: r.PostFormValue("description"),
 				Priority:    uint32(prio),
@@ -92,7 +92,7 @@ func (me *UI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 type ChangeView struct {
-	Change
+	Entry
 
 	InsertPrio uint32
 }

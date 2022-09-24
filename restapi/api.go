@@ -28,7 +28,7 @@ type API struct {
 }
 
 func (me *API) Create(w http.ResponseWriter, r *http.Request) {
-	var c Change
+	var c Entry
 	json.NewDecoder(r.Body).Decode(&c)
 	if err := me.Plan.Create(&c); err != nil {
 		w.WriteHeader(400)

@@ -10,7 +10,7 @@ func TestPlan(t *testing.T) {
 	sys, cleanup := NewDemo(t.TempDir())
 	defer cleanup()
 
-	c := Change{
+	c := Entry{
 		Title: "Something new...",
 	}
 	t.Run("Create", func(t *testing.T) {

@@ -16,7 +16,7 @@ import (
 
 func NewDemo(dir string) (*Plan, func()) {
 	sys := NewPlan(dir)
-	sys.Create(&Change{
+	sys.Create(&Entry{
 		Title:       "Create new changes",
 		Description: "Simple todo list",
 	})
@@ -26,14 +26,14 @@ func NewDemo(dir string) (*Plan, func()) {
 func NewPlan(dir string) *Plan {
 	return &Plan{
 		rootdir: dir,
-		Changes: make([]*Change, 0),
+		Changes: make([]*Entry, 0),
 	}
 }
 
 type Plan struct {
 	rootdir string
 
-	Changes []*Change
+	Changes []*Entry
 }
 
 func (me *Plan) Load() {
@@ -67,7 +67,7 @@ func (me *Plan) Save() error {
 
 func (me *Plan) Create(v interface{}) error {
 	switch v := v.(type) {
-	case *Change:
+	case *Entry:
 		v.UUID = uuid.Must(uuid.NewRandom())
 		me.Changes = append(me.Changes, v)
 		sort.Sort(ByPriority(me.Changes))
@@ -89,7 +89,7 @@ func (me *Plan) Remove(ref string) error {
 	return me.Save()
 }
 
-func (me *Plan) Update(ref string, in *Change) error {
+func (me *Plan) Update(ref string, in *Entry) error {
 	if ref == "" {
 		return fmt.Errorf("empty ref")
 	}
@@ -105,7 +105,7 @@ func (me *Plan) Update(ref string, in *Change) error {
 	return me.Save()
 }
 
-type Change struct {
+type Entry struct {
 	UUID        uuid.UUID
 	Title       string
 	Description string
@@ -113,12 +113,12 @@ type Change struct {
 	Priority uint32
 }
 
-func (me *Change) Ref() string {
+func (me *Entry) Ref() string {
 	v := me.UUID.String()
 	return v[len(v)-5:]
 }
 
-type ByPriority []*Change
+type ByPriority []*Entry
 
 func (b ByPriority) Len() int           { return len(b) }
 func (b ByPriority) Swap(i, j int)      { b[i], b[j] = b[j], b[i] }
