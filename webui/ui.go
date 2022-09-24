@@ -22,6 +22,7 @@ func NewUI(sys *Plan) *UI {
 	r.HandleFunc("/static/theme.css", serveTheme)
 	r.HandleFunc("/static/tools.js", serveTools)
 	r.HandleFunc("/removed", ui.serveRemoved).Methods("GET")
+	r.HandleFunc("/removed", ui.editRemoved).Methods("POST")
 	r.HandleFunc("/", ui.servePlan).Methods("GET")
 	r.HandleFunc("/", ui.editPlan).Methods("POST")
 	http.Handle("/", r)
@@ -119,6 +120,19 @@ func (me *UI) serveRemoved(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(500)
 		w.Write([]byte(err.Error()))
 	}
+}
+
+func (me *UI) editRemoved(w http.ResponseWriter, r *http.Request) {
+	switch r.PostFormValue("submit") {
+	case "delete":
+		err := me.Delete(r.PostFormValue("uuid"))
+		if err != nil {
+			w.WriteHeader(500)
+			w.Write([]byte(err.Error()))
+		}
+		// todo restore
+	}
+	http.Redirect(w, r, "/removed", 303)
 }
 
 type EntryView struct {

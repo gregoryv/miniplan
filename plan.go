@@ -92,6 +92,20 @@ func (me *Plan) Remove(ref string) error {
 	return me.Save()
 }
 
+func (me *Plan) Delete(ref string) error {
+	if ref == "" {
+		return fmt.Errorf("empty ref")
+	}
+	var i int
+	for i, _ = range me.Removed {
+		if strings.HasSuffix(me.Removed[i].UUID.String(), ref) {
+			break
+		}
+	}
+	me.Removed = append(me.Removed[:i], me.Removed[i+1:]...)
+	return me.Save()
+}
+
 func (me *Plan) Update(ref string, in *Entry) error {
 	if ref == "" {
 		return fmt.Errorf("empty ref")

@@ -17,6 +17,11 @@
 
 {{range .Removed}}
 
+<form method="POST" id="deleteForm{{.Ref}}">
+  <input type="hidden" name="uuid" value="{{.Ref}}">
+  <input type="hidden" name=submit value=delete>
+</form>
+
 <div class="row entry">
 
   <div class="left">    
@@ -28,7 +33,7 @@
   </div>
 
   <div class="right">
-    <button type="submit" form="restoreForm{{.Ref}}" class="remove">restore</button>    
+    <button type="submit" form="deleteForm{{.Ref}}" class="delete">delete</button>    
   </div>
 
 </div>
