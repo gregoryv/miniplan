@@ -44,8 +44,11 @@ func (me *UI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		m := map[string]interface{}{
 			"Changes":      changes,
 			"LastPriority": 0,
+
+			"RemovedHref":  "/removed",
+			"RemovedCount": len(me.Removed),
 		}
-		err := tpl.Execute(w, m)
+		err := plan.Execute(w, m)
 		if err != nil {
 			w.WriteHeader(500)
 			w.Write([]byte(err.Error()))
@@ -103,10 +106,10 @@ func (me *ChangeView) LineHeight() int {
 
 // ----------------------------------------
 
-var tpl = template.Must(template.New("").Parse(indexHtml))
+var plan = template.Must(template.New("").Parse(planHtml))
 
-//go:embed index.html
-var indexHtml string
+//go:embed plan.html
+var planHtml string
 
 // static assets
 
