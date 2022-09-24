@@ -21,8 +21,9 @@ func NewUI(sys *Plan) *UI {
 	r := mux.NewRouter()
 	r.HandleFunc("/static/theme.css", serveTheme)
 	r.HandleFunc("/static/tools.js", serveTools)
-	r.HandleFunc("/", ui.serveAll).Methods("GET", "POST")
-	r.HandleFunc("/removed", ui.serveAll).Methods("GET", "POST")
+	r.HandleFunc("/removed", ui.serveRemoved).Methods("GET")
+	r.HandleFunc("/", ui.servePlan).Methods("GET")
+	r.HandleFunc("/", ui.editPlan).Methods("POST")
 	http.Handle("/", r)
 
 	ui.Router = r
@@ -35,95 +36,88 @@ type UI struct {
 	*mux.Router
 }
 
-func (me *UI) serveAll(w http.ResponseWriter, r *http.Request) {
-	switch r.Method {
-	case "GET":
-		switch r.URL.Path {
-		case "/":
-			var changes []EntryView
-			for i, c := range me.Entries {
-				v := EntryView{
-					Entry: *c,
-					Index: i + 1,
-				}
-				// calculate middle prio between previous and current
-				v.InsertPrio = c.Priority + 10 // ie. above
-				if i > 0 {
-					diff := (me.Entries[i-1].Priority - c.Priority) / 2
-					v.InsertPrio = c.Priority + diff
-				}
-				changes = append(changes, v)
-			}
-			m := map[string]interface{}{
-				"Changes":      changes,
-				"LastPriority": 0,
+func (me *UI) servePlan(w http.ResponseWriter, r *http.Request) {
+	var changes []EntryView
+	for i, c := range me.Entries {
+		v := EntryView{
+			Entry: *c,
+			Index: i + 1,
+		}
+		// calculate middle prio between previous and current
+		v.InsertPrio = c.Priority + 10 // ie. above
+		if i > 0 {
+			diff := (me.Entries[i-1].Priority - c.Priority) / 2
+			v.InsertPrio = c.Priority + diff
+		}
+		changes = append(changes, v)
+	}
+	m := map[string]interface{}{
+		"Changes":      changes,
+		"LastPriority": 0,
+		"RemovedHref":  "/removed",
+		"RemovedCount": len(me.Removed),
+	}
 
-				"RemovedHref":  "/removed",
-				"RemovedCount": len(me.Removed),
-			}
+	if err := plan.Execute(w, m); err != nil {
+		w.WriteHeader(500)
+		w.Write([]byte(err.Error()))
+	}
+}
 
-			if err := plan.Execute(w, m); err != nil {
-				w.WriteHeader(500)
-				w.Write([]byte(err.Error()))
-			}
+func (me *UI) editPlan(w http.ResponseWriter, r *http.Request) {
+	switch r.PostFormValue("submit") {
+	case "add":
+		prio, err := strconv.ParseUint(r.PostFormValue("priority"), 10, 32)
+		if err != nil {
+			log.Print(err)
+		}
+		c := Entry{
+			Title:       r.PostFormValue("title"),
+			Description: r.PostFormValue("description"),
+			Priority:    uint32(prio),
+		}
+		_ = me.Create(&c)
 
-		case "/removed":
-			var changes []EntryView
-			for i, c := range me.Removed {
-				v := EntryView{
-					Entry: *c,
-					Index: i + 1,
-				}
-				changes = append(changes, v)
-			}
-			m := map[string]interface{}{
-				"Removed":      changes,
-				"RemovedHref":  "/removed",
-				"RemovedCount": len(me.Removed),
-			}
-			if err := removed.Execute(w, m); err != nil {
-				w.WriteHeader(500)
-				w.Write([]byte(err.Error()))
-			}
+	case "remove":
+		err := me.Remove(r.PostFormValue("uuid"))
+		if err != nil {
+			w.WriteHeader(500)
+			w.Write([]byte(err.Error()))
 		}
 
-	case "POST":
-		switch r.PostFormValue("submit") {
-		case "add":
-			prio, err := strconv.ParseUint(r.PostFormValue("priority"), 10, 32)
-			if err != nil {
-				log.Print(err)
-			}
-			c := Entry{
-				Title:       r.PostFormValue("title"),
-				Description: r.PostFormValue("description"),
-				Priority:    uint32(prio),
-			}
-			_ = me.Create(&c)
-
-		case "remove":
-			err := me.Remove(r.PostFormValue("uuid"))
-			if err != nil {
-				w.WriteHeader(500)
-				w.Write([]byte(err.Error()))
-			}
-		case "update":
-			prio, _ := strconv.ParseUint(r.PostFormValue("priority"), 10, 32)
-			c := Entry{
-				Title:       r.PostFormValue("title"),
-				Description: r.PostFormValue("description"),
-				Priority:    uint32(prio),
-			}
-			err := me.Update(r.PostFormValue("uuid"), &c)
-			if err != nil {
-				w.WriteHeader(500)
-				w.Write([]byte(err.Error()))
-			}
+	case "update":
+		prio, _ := strconv.ParseUint(r.PostFormValue("priority"), 10, 32)
+		c := Entry{
+			Title:       r.PostFormValue("title"),
+			Description: r.PostFormValue("description"),
+			Priority:    uint32(prio),
 		}
-		http.Redirect(w, r, "/", 303)
+		err := me.Update(r.PostFormValue("uuid"), &c)
+		if err != nil {
+			w.WriteHeader(500)
+			w.Write([]byte(err.Error()))
+		}
+	}
+	http.Redirect(w, r, "/", 303)
+}
 
-	default:
-		w.WriteHeader(405)
+func (me *UI) serveRemoved(w http.ResponseWriter, r *http.Request) {
+	var changes []EntryView
+	for i, c := range me.Removed {
+		v := EntryView{
+			Entry: *c,
+			Index: i + 1,
+		}
+		changes = append(changes, v)
+	}
+	m := map[string]interface{}{
+		"Removed":      changes,
+		"RemovedHref":  "/removed",
+		"RemovedCount": len(me.Removed),
+	}
+	if err := removed.Execute(w, m); err != nil {
+		w.WriteHeader(500)
+		w.Write([]byte(err.Error()))
 	}
 }
 
