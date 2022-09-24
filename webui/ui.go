@@ -8,24 +8,34 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/gorilla/mux"
 	"github.com/gregoryv/miniplan"
 	. "github.com/gregoryv/miniplan"
 )
 
 func NewUI(sys *Plan) *UI {
-	http.HandleFunc("/static/theme.css", serveTheme)
-	http.HandleFunc("/static/tools.js", serveTools)
+	ui := &UI{
+		Plan: sys,
+	}
 
-	ui := &UI{Plan: sys}
-	http.Handle("/", ui)
+	r := mux.NewRouter()
+	r.HandleFunc("/static/theme.css", serveTheme)
+	r.HandleFunc("/static/tools.js", serveTools)
+	r.HandleFunc("/", ui.serveAll).Methods("GET", "POST")
+	r.HandleFunc("/removed", ui.serveAll).Methods("GET", "POST")
+	http.Handle("/", r)
+
+	ui.Router = r
 	return ui
 }
 
 type UI struct {
 	*miniplan.Plan
+
+	*mux.Router
 }
 
-func (me *UI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (me *UI) serveAll(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
 		switch r.URL.Path {
