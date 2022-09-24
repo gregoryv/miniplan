@@ -42,11 +42,7 @@ input[name=title] {
     font-size: 1em;
 }
 
-a.idref {
-    color: black;
-    text-decoration: none;
-    font-family: sans-serif;
-}
+a.idref { color: black; text-decoration: none; font-family: sans-serif;}
 a.idref:hover { text-decoration: underline; }
 
 button {
@@ -69,9 +65,7 @@ form {
     margin: 0 0;
 }
 
-nav {
-    margin-bottom: 24px;
-    text-align: center;
-}
-
+nav { margin-bottom: 24px; text-align: center; font-family: sans-serif;}
+nav a { text-decoration: none; color: #727272; }
+nav b { font-weight: normal; }
    
