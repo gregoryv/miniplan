@@ -25,11 +25,17 @@
 <div class="row entry">
 
   <div class="left">    
-    {{.Index}}. <a name="{{.Ref}}"></a><a href="#{{.Ref}}" class="idref">#{{.Ref}}</a>
+    {{.Index}}. <a name="{{.Ref}}"></a>
   </div>
+
   <div class="mid">
-      {{.Title}}<br>
-      <pre>{{.Description}}</pre>
+    <table>
+      <tr>
+	<td>{{.Title}}</td>
+	<td class="ref"><a href="#{{.Ref}}" class="idref">#{{.Ref}}</a></td>
+      </tr>
+    </table>
+    <pre>{{.Description}}</pre>
   </div>
 
   <div class="right">
