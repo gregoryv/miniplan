@@ -26,7 +26,7 @@ h1 {
 }
 
 .row.insert {
-    margin-bottom: 14px;
+    margin: 14px 0px;
 }
 
 .row.insert:hover hr {
@@ -40,6 +40,7 @@ h1 {
 
 .right {
     width: 120px;
+    padding-left: 10px;
 }
 
 .mid {
@@ -48,7 +49,11 @@ h1 {
 }
 
 .entry {
-    padding-bottom: 1em;
+    background-color: white;
+}
+
+.entry .right{
+    background-color: #fafafa;
 }
 
 .entry input[name=priority] {
