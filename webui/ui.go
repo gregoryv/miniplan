@@ -80,8 +80,7 @@ func (me *UI) editPlan(w http.ResponseWriter, r *http.Request) {
 		_ = me.Create(&c)
 
 	case "remove":
-		err := me.Remove(r.PostFormValue("uuid"))
-		if err != nil {
+		if err := me.Remove(r.PostFormValue("uuid")); err != nil {
 			w.WriteHeader(500)
 			w.Write([]byte(err.Error()))
 		}

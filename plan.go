@@ -87,7 +87,7 @@ func (me *Plan) Remove(ref string) error {
 			break
 		}
 	}
-	me.Removed = append(me.Removed, me.Entries[i])
+	me.Removed = append([]*Entry{me.Entries[i]}, me.Removed...)
 	me.Entries = append(me.Entries[:i], me.Entries[i+1:]...)
 	return me.Save()
 }
