@@ -2,6 +2,7 @@ body {
     width: 21cm;
     margin: 0 auto;
     background-color: #fafafa;
+    padding-bottom: 900px;
 }
 
 h1 { text-align: center; }

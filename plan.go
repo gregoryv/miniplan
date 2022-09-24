@@ -67,13 +67,10 @@ func (me *Plan) Save() error {
 	return err
 }
 
-func (me *Plan) Create(v interface{}) error {
-	switch v := v.(type) {
-	case *Entry:
-		v.UUID = uuid.Must(uuid.NewRandom())
-		me.Entries = append(me.Entries, v)
-		sort.Sort(ByPriority(me.Entries))
-	}
+func (me *Plan) Create(v *Entry) error {
+	v.UUID = uuid.Must(uuid.NewRandom())
+	me.Entries = append(me.Entries, v)
+	sort.Sort(ByPriority(me.Entries))
 	return me.Save()
 }
 

@@ -78,6 +78,8 @@ func (me *UI) editPlan(w http.ResponseWriter, r *http.Request) {
 			Priority:    uint32(prio),
 		}
 		_ = me.Create(&c)
+		http.Redirect(w, r, "/#"+c.Ref(), 303)
+		return
 
 	case "remove":
 		if err := me.Remove(r.PostFormValue("uuid")); err != nil {
