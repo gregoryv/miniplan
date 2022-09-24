@@ -71,6 +71,10 @@ func (me *Plan) Create(v *Entry) error {
 	v.UUID = uuid.Must(uuid.NewRandom())
 	me.Entries = append(me.Entries, v)
 	sort.Sort(ByPriority(me.Entries))
+	for _, e := range me.Entries {
+		e.JustCreated = false
+	}
+	v.JustCreated = true
 	return me.Save()
 }
 
@@ -115,6 +119,9 @@ func (me *Plan) Update(ref string, in *Entry) error {
 			break
 		}
 	}
+	for _, e := range me.Entries {
+		e.JustCreated = false
+	}
 	sort.Sort(ByPriority(me.Entries))
 	return me.Save()
 }
@@ -123,8 +130,9 @@ type Entry struct {
 	UUID        uuid.UUID
 	Title       string
 	Description string
+	Priority    uint32
 
-	Priority uint32
+	JustCreated bool
 }
 
 func (me *Entry) Ref() string {

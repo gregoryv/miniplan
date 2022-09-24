@@ -1,5 +1,4 @@
-<!doctype html>
-
+<!DOCTYPE html>
 <html>
   
 <head><title>miniplan</title>
@@ -48,7 +47,10 @@
       <table>
 	<tr>
 	  <td>
-	    <input type="text" name="title" value="{{.Title}}" />
+	    <input placeholder="title" type="text" name="title" value="{{.Title}}" {{if .JustCreated}}id="justCreated" autofocus{{end}} >
+	    {{if .JustCreated}}
+	    <script>document.getElementById("justCreated").focus();</script>
+	    {{end}}
 	  </td>
 	  <td class="ref">
 	    <sup><a href="#{{.Ref}}" class="idref">#{{.Ref}}</a></sup>
