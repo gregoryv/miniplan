@@ -14,22 +14,20 @@
     <a href="/">Plan</a> - <b>Removed</b>
   </nav>
 
-  <ol class="removed">
-{{range .Removed}}
+  <div class="deleteNote">Note! There is no undo after delete.</div>
 
-<li>
-  <a name="{{.Ref}}"></a>
+  <ol class="removed">{{range .Removed}}
+    <li>
+      <a name="{{.Ref}}"></a>
 
-  <span>{{.Title}}</span> <a href="#{{.Ref}}" title="priority" class="idref">#{{.Ref}}</a>
-  <button type="submit" form="deleteForm{{.Ref}}" class="delete">delete</button>
+      <span>{{.Title}}</span> <a href="#{{.Ref}}" title="priority" class="idref">#{{.Ref}}</a>
+      <button type="submit" form="deleteForm{{.Ref}}" class="delete">delete</button>
 
-    <form method="POST" id="deleteForm{{.Ref}}">
-      <input type="hidden" name="uuid" value="{{.Ref}}">
-      <input type="hidden" name=submit value=delete>
-    </form>
-</li>
-
-{{end}}
-</ol>
+      <form method="POST" id="deleteForm{{.Ref}}">
+	<input type="hidden" name="uuid" value="{{.Ref}}">
+	<input type="hidden" name=submit value=delete>
+      </form>
+    </li>{{end}}
+  </ol>
 
 </body></html>

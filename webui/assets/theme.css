@@ -56,6 +56,7 @@ button {
 button:hover        { color: black; }
 button.remove:hover { color: red; }
 button.delete:hover { color: red; }
+div.deleteNote { text-align: right; font-style: italic;}
 
 table { width: 100%; }
 .entry .ref {
@@ -63,5 +64,5 @@ table { width: 100%; }
     background-color: #fafafa; text-align: center; padding-top: 4px;
 }
 
-.removed span { display: inline-block; width: 15cm; }
+.removed span { display: inline-block; width: 16.5cm; }
 
