@@ -15,7 +15,7 @@ import (
 func main() {
 	var (
 		cli      = cmdline.NewBasicParser()
-		bind     = cli.Option("-b, --bind").String("localhost:9180")
+		bind     = cli.Option("-b, --bind").String(":9180")
 		planfile = cli.Option("-f, --plan-file").String("index.json")
 		logfile  = cli.Option("-l, --log-file").String("")
 	)
@@ -44,7 +44,7 @@ func main() {
 	plan.Load()
 
 	// init web user interface
-	fmt.Printf("listen on http://%s\n", bind)
+	fmt.Printf("listen on %s\n", bind)
 	_ = webui.NewUI(plan)
 	if err := http.ListenAndServe(bind, nil); err != nil {
 		log.Fatal(err)
