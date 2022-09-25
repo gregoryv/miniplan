@@ -142,11 +142,27 @@ func (me *Plan) Update(ref string, in *Entry) error {
 	return me.Save()
 }
 
+func (me *Plan) Reprio() error {
+	step := 10
+	switch {
+	case len(me.Entries) > 9:
+		step = 5
+	case len(me.Entries) > 19:
+		step = 3
+	}
+	v := len(me.Entries) * step
+	for _, e := range me.Entries {
+		e.Priority = v
+		v -= step
+	}
+	return me.Save()
+}
+
 type Entry struct {
 	UUID        uuid.UUID
 	Title       string
 	Description string
-	Priority    uint32
+	Priority    int
 
 	JustCreated bool
 }

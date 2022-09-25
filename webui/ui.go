@@ -76,7 +76,7 @@ func (me *UI) editPlan(w http.ResponseWriter, r *http.Request) {
 		c := Entry{
 			Title:       r.PostFormValue("title"),
 			Description: r.PostFormValue("description"),
-			Priority:    uint32(prio),
+			Priority:    int(prio),
 		}
 		_ = me.Create(&c)
 		http.Redirect(w, r, "/#"+c.Ref(), 303)
@@ -89,11 +89,11 @@ func (me *UI) editPlan(w http.ResponseWriter, r *http.Request) {
 		}
 
 	case "update":
-		prio, _ := strconv.ParseUint(r.PostFormValue("priority"), 10, 32)
+		prio, _ := strconv.ParseInt(r.PostFormValue("priority"), 10, 32)
 		c := Entry{
 			Title:       r.PostFormValue("title"),
 			Description: r.PostFormValue("description"),
-			Priority:    uint32(prio),
+			Priority:    int(prio),
 		}
 		err := me.Update(r.PostFormValue("uuid"), &c)
 		if err != nil {
@@ -144,7 +144,7 @@ func (me *UI) editRemoved(w http.ResponseWriter, r *http.Request) {
 type EntryView struct {
 	Entry
 
-	InsertPrio uint32
+	InsertPrio int
 	Index      int
 }
 
