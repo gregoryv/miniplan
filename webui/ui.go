@@ -21,7 +21,7 @@ func NewUI(sys *Plan) *UI {
 	r := mux.NewRouter()
 	r.HandleFunc("/favicon.ico", serveFavicon)
 	r.HandleFunc("/static/theme.css", serveTheme)
-	r.HandleFunc("/static/tools.js", serveTools)
+	r.HandleFunc("/static/enhance.js", serveEnhance)
 	r.HandleFunc("/removed", ui.serveRemoved).Methods("GET")
 	r.HandleFunc("/removed", ui.editRemoved).Methods("POST")
 	r.HandleFunc("/", ui.servePlan).Methods("GET")
@@ -201,10 +201,10 @@ func serveTheme(w http.ResponseWriter, r *http.Request) {
 //go:embed assets/theme.css
 var theme []byte
 
-func serveTools(w http.ResponseWriter, r *http.Request) {
+func serveEnhance(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("content-type", "text/javascript")
-	w.Write(tools)
+	w.Write(enhance)
 }
 
-//go:embed assets/tools.js
-var tools []byte
+//go:embed assets/enhance.js
+var enhance []byte
