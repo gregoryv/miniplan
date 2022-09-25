@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [unreleased]
+## [0.1.1] 2022-09-25
 
 - Add MIT license
 - Fix actually use --log-file argument if set
