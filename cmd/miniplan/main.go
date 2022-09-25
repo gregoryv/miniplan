@@ -12,8 +12,9 @@ import (
 
 func main() {
 	var (
-		cli  = cmdline.NewBasicParser()
-		bind = cli.Option("-b, --bind").String(":9180")
+		cli      = cmdline.NewBasicParser()
+		bind     = cli.Option("-b, --bind").String("localhost:9180")
+		planfile = cli.Option("-f, --plan-file").String("index.json")
 	)
 	cli.Parse()
 	log.SetFlags(0)
@@ -33,7 +34,8 @@ func main() {
 		log.Print(err)
 		dir = "."
 	}
-	plan := miniplan.NewPlan(dir)
+
+	plan := miniplan.NewPlan(dir, planfile)
 	plan.Load()
 
 	// init web user interface

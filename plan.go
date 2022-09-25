@@ -16,24 +16,26 @@ import (
 )
 
 func NewDemo(dir string) (*Plan, func()) {
-	sys := NewPlan(dir)
-	sys.Create(&Entry{
+	p := NewPlan(dir, "demo.json")
+	p.Create(&Entry{
 		Title:       "Create new changes",
 		Description: "Simple todo list",
 	})
-	return sys, func() { os.RemoveAll(dir) }
+	return p, func() { os.RemoveAll(dir) }
 }
 
-func NewPlan(dir string) *Plan {
+func NewPlan(dir, planfile string) *Plan {
 	return &Plan{
-		rootdir: dir,
-		Entries: make([]*Entry, 0),
-		Removed: make([]*Entry, 0),
+		rootdir:  dir,
+		planfile: filepath.Join(dir, planfile),
+		Entries:  make([]*Entry, 0),
+		Removed:  make([]*Entry, 0),
 	}
 }
 
 type Plan struct {
-	rootdir string
+	rootdir  string
+	planfile string
 
 	Entries []*Entry
 	Removed []*Entry
