@@ -8,7 +8,7 @@ TimeoutStartSec=0
 Type=simple
 KillMode=process
 WorkingDirectory=/var/opt/miniplan
-ExecStart=/home/gregory/bin/miniplan
+ExecStart=/home/gregory/bin/miniplan --log-file mini.log --plan-file index.json
 Restart=always
 LimitNOFILE=5555
 

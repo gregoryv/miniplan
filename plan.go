@@ -16,7 +16,7 @@ import (
 )
 
 func NewDemo(dir string) (*Plan, func()) {
-	p := NewPlan(dir, "demo.json")
+	p := NewPlan(filepath.Join(dir, "demo.json"))
 	p.Create(&Entry{
 		Title:       "Create new changes",
 		Description: "Simple todo list",
@@ -24,17 +24,15 @@ func NewDemo(dir string) (*Plan, func()) {
 	return p, func() { os.RemoveAll(dir) }
 }
 
-func NewPlan(dir, planfile string) *Plan {
+func NewPlan(planfile string) *Plan {
 	return &Plan{
-		rootdir:  dir,
-		planfile: filepath.Join(dir, planfile),
+		planfile: planfile,
 		Entries:  make([]*Entry, 0),
 		Removed:  make([]*Entry, 0),
 	}
 }
 
 type Plan struct {
-	rootdir  string
 	planfile string
 
 	Entries []*Entry
@@ -43,7 +41,7 @@ type Plan struct {
 
 func (me *Plan) Load() {
 	// load data into memory
-	fh, err := os.Open(filepath.Join(me.rootdir, "index.json"))
+	fh, err := os.Open(me.planfile)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -61,7 +59,7 @@ func (me *Plan) Save() error {
 
 	var tidy bytes.Buffer
 	json.Indent(&tidy, buf.Bytes(), "", "  ")
-	w, err := os.Create(filepath.Join(me.rootdir, "index.json"))
+	w, err := os.Create(me.planfile)
 	if err != nil {
 		return err
 	}

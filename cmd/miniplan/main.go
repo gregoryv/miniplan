@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -15,30 +17,33 @@ func main() {
 		cli      = cmdline.NewBasicParser()
 		bind     = cli.Option("-b, --bind").String("localhost:9180")
 		planfile = cli.Option("-f, --plan-file").String("index.json")
+		logfile  = cli.Option("-l, --log-file").String("")
 	)
 	cli.Parse()
 	log.SetFlags(0)
 
-	// open log file
-	out, err := os.Create("mini.log")
-	if err != nil {
-		log.Fatal(err)
+	if logfile != "" {
+		out, err := os.Create("mini.log")
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer out.Close()
+		log.SetOutput(out)
 	}
-	defer out.Close()
-	log.SetOutput(out)
 
 	// create plan
-	log.Print("create plan")
-	dir, err := os.Getwd()
-	if err != nil {
-		log.Print(err)
-		dir = "."
+	if _, err := os.Stat(planfile); err != nil {
+		if err := ioutil.WriteFile(planfile, []byte("{}"), 0644); err != nil {
+			log.Fatal(err)
+		}
+		log.Println("create plan", planfile)
 	}
 
-	plan := miniplan.NewPlan(dir, planfile)
+	plan := miniplan.NewPlan(planfile)
 	plan.Load()
 
 	// init web user interface
+	fmt.Printf("Listens on http://%s\n", bind)
 	_ = webui.NewUI(plan)
 	if err := http.ListenAndServe(bind, nil); err != nil {
 		log.Fatal(err)
