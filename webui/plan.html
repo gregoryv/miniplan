@@ -47,22 +47,22 @@
       <table>
 	<tr>
 	  <td>
-	    <input placeholder="title" type="text" name="title" value="{{.Title}}" {{if .JustCreated}}id="justCreated" autofocus{{end}} >
+	    <input tabindex={{.NextTab}} placeholder="title" type="text" name="title" value="{{.Title}}" {{if .JustCreated}}id="justCreated" autofocus{{end}} >
 	    {{if .JustCreated}}
 	    <script>document.getElementById("justCreated").focus();</script>
 	    {{end}}
 	  </td>
 	  <td class="ref">
-	    <sup><a href="#{{.Ref}}" class="idref">#{{.Ref}}</a></sup>
+	    <a href="#{{.Ref}}" class="idref">#{{.Ref}}</a>
 	  </td>
 	</tr>
       </table>
-      <textarea rows="{{.LineHeight}}" name="description">{{.Description}}</textarea>
+      <textarea tabindex={{.NextTab}} rows="{{.LineHeight}}" name="description">{{.Description}}</textarea>
     </form>
   </div>
 
   <div class="right">
-    <input type="number" min="0" name="priority" title="priority" value="{{.Priority}}" form="f{{.Ref}}"/>
+    <input tabindex={{.NextTab}} type="number" min="0" name="priority" title="priority" value="{{.Priority}}" form="f{{.Ref}}"/>
     <br>
     <button type="submit" form="f{{.Ref}}" class="save">save</button><br>
     <button type="submit" form="removeForm{{.Ref}}" class="remove">remove</button>    

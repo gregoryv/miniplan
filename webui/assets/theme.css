@@ -46,23 +46,17 @@ a.idref:hover { text-decoration: underline; }
     resize: none;
     margin-bottom: 8px;
 }
-
-button {
-    color: #727272;
-    background-color: inherit;
-    border: 0;
+.entry table { width: 100%; }
+.entry .ref {
+    width: 70px; position: relative; right: -6px; top: -4px;
+    background-color: #fafafa; text-align: center; 
 }
 
+button { color: #727272; background-color: inherit; border: 0;}
 button:hover        { color: black; }
 button.remove:hover { color: red; }
 button.delete:hover { color: red; }
 div.deleteNote { text-align: right; font-style: italic;}
-
-table { width: 100%; }
-.entry .ref {
-    width: 70px; position: relative; right: -6px; top: -2px;
-    background-color: #fafafa; text-align: center; padding-top: 4px;
-}
 
 .removed span { display: inline-block; width: 14.5cm; }
 

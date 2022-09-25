@@ -40,10 +40,12 @@ type UI struct {
 
 func (me *UI) servePlan(w http.ResponseWriter, r *http.Request) {
 	var changes []EntryView
+	tabber := newTabber()
 	for i, c := range me.Entries {
 		v := EntryView{
-			Entry: *c,
-			Index: i + 1,
+			Entry:   *c,
+			Index:   i + 1,
+			nextTab: tabber,
 		}
 		// calculate middle prio between previous and current
 		v.InsertPrio = c.Priority + 10 // ie. above
@@ -146,10 +148,26 @@ type EntryView struct {
 
 	InsertPrio int
 	Index      int
+
+	nextTab func() int
+}
+
+func (me *EntryView) NextTab() int {
+	return me.nextTab()
 }
 
 func (me *EntryView) LineHeight() int {
 	return strings.Count(me.Description, "\n") + 2
+}
+
+// ----------------------------------------
+
+func newTabber() func() int {
+	var v int
+	return func() int {
+		v++
+		return v
+	}
 }
 
 // ----------------------------------------
