@@ -23,10 +23,11 @@ func main() {
 	log.SetFlags(0)
 
 	if logfile != "" {
-		out, err := os.Create("mini.log")
+		out, err := os.Create(logfile)
 		if err != nil {
 			log.Fatal(err)
 		}
+		log.Println("create", logfile)
 		defer out.Close()
 		log.SetOutput(out)
 	}
@@ -36,14 +37,14 @@ func main() {
 		if err := ioutil.WriteFile(planfile, []byte("{}"), 0644); err != nil {
 			log.Fatal(err)
 		}
-		log.Println("create plan", planfile)
+		log.Println("create", planfile)
 	}
 
 	plan := miniplan.NewPlan(planfile)
 	plan.Load()
 
 	// init web user interface
-	fmt.Printf("Listens on http://%s\n", bind)
+	fmt.Printf("listen on http://%s\n", bind)
 	_ = webui.NewUI(plan)
 	if err := http.ListenAndServe(bind, nil); err != nil {
 		log.Fatal(err)
