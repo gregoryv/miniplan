@@ -139,23 +139,34 @@ func (me *Plan) Update(ref string, in *Entry) error {
 		e.JustCreated = false
 	}
 	sort.Sort(ByPriority(me.Entries))
+	me.fixPriority()
 	return me.Save()
 }
 
-func (me *Plan) Reprio() error {
+func (me *Plan) fixPriority() {
+	// count those with priority > 0
+	var count int
+	for _, e := range me.Entries {
+		if e.Priority == 0 {
+			break
+		}
+		count++
+	}
 	step := 10
 	switch {
-	case len(me.Entries) > 9:
+	case count > 9:
 		step = 5
-	case len(me.Entries) > 19:
+	case count > 19:
 		step = 3
 	}
-	v := len(me.Entries) * step
+	v := count * step
 	for _, e := range me.Entries {
+		if e.Priority == 0 {
+			break
+		}
 		e.Priority = v
 		v -= step
 	}
-	return me.Save()
 }
 
 type Entry struct {
