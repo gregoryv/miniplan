@@ -46,6 +46,8 @@ a.idref:hover { text-decoration: underline; }
     resize: none;
     margin-bottom: 8px;
 }
+.entry textarea:focus { resize: vertical; }
+
 .entry table { width: 100%; }
 .entry .ref {
     width: 70px; position: relative; right: -6px; top: -4px;
