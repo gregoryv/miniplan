@@ -1,10 +1,13 @@
 package webui
 
 import (
+	"embed"
 	_ "embed"
 	"html/template"
+	"io"
 	"log"
 	"net/http"
+	"path/filepath"
 	"strconv"
 	"strings"
 
@@ -19,9 +22,9 @@ func NewUI(sys *Plan) *UI {
 	}
 
 	r := mux.NewRouter()
-	r.HandleFunc("/favicon.ico", serveFavicon)
-	r.HandleFunc("/static/theme.css", serveTheme)
-	r.HandleFunc("/static/enhance.js", serveEnhance)
+	r.HandleFunc("/favicon.ico", serveAsset("assets/favicon.ico"))
+	r.HandleFunc("/static/theme.css", serveAsset("assets/theme.css"))
+	r.HandleFunc("/static/enhance.js", serveAsset("assets/enhance.js"))
 	r.HandleFunc("/removed", ui.serveRemoved).Methods("GET")
 	r.HandleFunc("/removed", ui.editRemoved).Methods("POST")
 	r.HandleFunc("/", ui.servePlan).Methods("GET")
@@ -185,26 +188,25 @@ var (
 
 // static assets
 
-func serveFavicon(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("content-type", "image/x-icon")
-	w.Write(faviconIco)
+func serveAsset(filename string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Add(
+			"content-type", mimeTypes[filepath.Ext(filename)],
+		)
+		fh, err := assets.Open(filename)
+		if err != nil {
+			log.Print(err)
+		}
+		defer fh.Close()
+		io.Copy(w, fh)
+	}
 }
 
-//go:embed assets/favicon.ico
-var faviconIco []byte
-
-func serveTheme(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("content-type", "text/css")
-	w.Write(theme)
+var mimeTypes = map[string]string{
+	".js":  "text/javascript",
+	".ico": "image/x-icon",
+	".css": "text/css",
 }
 
-//go:embed assets/theme.css
-var theme []byte
-
-func serveEnhance(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("content-type", "text/javascript")
-	w.Write(enhance)
-}
-
-//go:embed assets/enhance.js
-var enhance []byte
+//go:embed assets
+var assets embed.FS
