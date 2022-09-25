@@ -18,11 +18,32 @@
 
   <div class="deleteNote">Note! There is no undo after delete.</div>
 
-  <ol class="removed">{{range .Removed}}
+  <ol class="removed">
+
+{{range .RemovedRecently}}
     <li>
       <a name="{{.Ref}}"></a>
 
-      <span>{{.Title}}</span> <a href="#{{.Ref}}" title="priority" class="idref">#{{.Ref}}</a>
+      <span class="title">{{.Title}} <span class="timestamp">{{.RemovedAgo}}</span></span> <a href="#{{.Ref}}" title="priority" class="idref">#{{.Ref}}</a>
+      <button type="submit" form="restoreForm{{.Ref}}">restore</button> <button type="submit" form="deleteForm{{.Ref}}" class="delete">delete</button>
+
+      <form method="POST" id="deleteForm{{.Ref}}">
+	<input type="hidden" name="uuid" value="{{.Ref}}">
+	<input type="hidden" name=submit value=delete>
+      </form>
+      <form method="POST" id="restoreForm{{.Ref}}">
+	<input type="hidden" name="uuid" value="{{.Ref}}">
+	<input type="hidden" name=submit value=restore>
+      </form>
+    </li>{{end}}
+
+    <div id="removedSeparator">... removed more than a week ago ...</div>
+    
+    {{range .Removed}}
+    <li>
+      <a name="{{.Ref}}"></a>
+
+      <span class="title">{{.Title}} <span class="timestamp">{{.RemovedAgo}}</span></span> <a href="#{{.Ref}}" title="priority" class="idref">#{{.Ref}}</a>
       <button type="submit" form="restoreForm{{.Ref}}">restore</button> <button type="submit" form="deleteForm{{.Ref}}" class="delete">delete</button>
 
       <form method="POST" id="deleteForm{{.Ref}}">

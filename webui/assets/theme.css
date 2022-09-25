@@ -56,7 +56,11 @@ button { color: #727272; background-color: inherit; border: 0;}
 button:hover        { color: black; }
 button.remove:hover { color: red; }
 button.delete:hover { color: red; }
-div.deleteNote { text-align: right; font-style: italic;}
+div.deleteNote { text-align: right; font-style: italic; font-size: 0.8em; padding-right: 25px;}
 
-.removed span { display: inline-block; width: 14.5cm; }
+/* removed view */
 
+.removed span.title { display: inline-block; width: 14.5cm; }
+.removed span.timestamp { color: #727272; text-decoration: none;
+			  font-family: sans-serif; font-size: 12px;}
+.removed #removedSeparator { margin: 10px 10px; text-align: center; font-style: italic; font-size: 0.8em;}

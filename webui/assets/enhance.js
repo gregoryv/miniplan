@@ -1,5 +1,4 @@
 document.addEventListener('keydown', function(event) {
-    console.log(event.key, event.keyCode);
     switch (event.keyCode) {
     case 68: // d
 	window.scrollTo(0, document.body.scrollHeight);

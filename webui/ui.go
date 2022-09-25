@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/gregoryv/miniplan"
@@ -110,18 +111,24 @@ func (me *UI) editPlan(w http.ResponseWriter, r *http.Request) {
 }
 
 func (me *UI) serveRemoved(w http.ResponseWriter, r *http.Request) {
-	var changes []EntryView
+	var older []EntryView
+	var recently []EntryView
 	for i, c := range me.Removed {
 		v := EntryView{
 			Entry: *c,
 			Index: i + 1,
 		}
-		changes = append(changes, v)
+		if !c.RemovedOn.IsZero() && time.Since(c.RemovedOn) < 7*24*60*60*time.Second {
+			recently = append(recently, v)
+		} else {
+			older = append(older, v)
+		}
 	}
 	m := map[string]interface{}{
-		"Removed":      changes,
-		"RemovedHref":  "/removed",
-		"RemovedCount": len(me.Removed),
+		"RemovedRecently": recently,
+		"Removed":         older,
+		"RemovedHref":     "/removed",
+		"RemovedCount":    len(me.Removed),
 	}
 	if err := removed.Execute(w, m); err != nil {
 		w.WriteHeader(500)
@@ -153,6 +160,17 @@ type EntryView struct {
 	Index      int
 
 	nextTab func() int
+}
+
+func (me *EntryView) RemovedAgo() string {
+	switch {
+	case me.RemovedOn.IsZero():
+		return ""
+	case time.Since(me.RemovedOn) < time.Duration(24*60*60*time.Second):
+		return "today"
+	default:
+		return me.RemovedOn.Format("2006-01-02 15:04:05")
+	}
 }
 
 func (me *EntryView) NextTab() int {

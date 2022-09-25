@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -88,6 +89,7 @@ func (me *Plan) Remove(ref string) error {
 			break
 		}
 	}
+	me.Entries[i].RemovedOn = time.Now()
 	me.Removed = append([]*Entry{me.Entries[i]}, me.Removed...)
 	me.Entries = append(me.Entries[:i], me.Entries[i+1:]...)
 	return me.Save()
@@ -117,8 +119,11 @@ func (me *Plan) Restore(ref string) error {
 			break
 		}
 	}
-	me.Removed[i].Priority = 0 // put it last
-	me.Entries = append(me.Entries, me.Removed[i])
+	entry := me.Removed[i]
+	entry.Priority = 0 // put it last
+	entry.RemovedOn = time.Time{}
+
+	me.Entries = append(me.Entries, entry)
 	me.Removed = append(me.Removed[:i], me.Removed[i+1:]...) // clear
 	return me.Save()
 }
@@ -175,7 +180,8 @@ type Entry struct {
 	Description string
 	Priority    int
 
-	JustCreated bool `json:",omitempty"`
+	JustCreated bool      `json:",omitempty"`
+	RemovedOn   time.Time `json:",omitempty"`
 }
 
 func (me *Entry) Ref() string {
