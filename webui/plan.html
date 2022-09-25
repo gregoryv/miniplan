@@ -10,8 +10,8 @@
   <h1>Miniplan</h1>
   <nav>
     <ul>
-      <li class="selected"><a href="/">Plan</a></li>
-      <li><a href="{{.RemovedHref}}">Removed</a></li>
+      <li class="selected"><a id="nav1" href="/">Plan</a></li>
+      <li><a id="nav2" href="{{.RemovedHref}}">Removed</a></li>
     </ul>
   </nav>
 
@@ -93,9 +93,14 @@
 <script>
   document.writeln("<pre id=\"enhanced\">");
   document.writeln("Shortcuts\n");
-  document.writeln("  r : scroll to top");
-  document.writeln("  a : insert at bottom");
+  document.writeln("  e : goto plan");
+  document.writeln("  r : goto removed");
+  document.writeln("  f : scroll to top");
+  document.writeln("  d : scroll to bottom");
+  document.writeln("  a : insert last");
   document.writeln("</pre>");
+
+  disableKeydownOnInputs();
 </script>
 
 </body></html>

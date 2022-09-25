@@ -11,8 +11,8 @@
   <h1>Miniplan</h1>
   <nav>
     <ul>
-      <li><a href="/">Plan</a></li>
-      <li class="selected"><a href="{{.RemovedHref}}">Removed</a></li>
+      <li><a id="nav1" href="/">Plan</a></li>
+      <li class="selected"><a id="nav2" href="{{.RemovedHref}}">Removed</a></li>
     </ul>
   </nav>
 
@@ -35,5 +35,8 @@
       </form>
     </li>{{end}}
   </ol>
+  
+<script src="/static/enhance.js"></script>
+<noscript>Enable javascript for enhanced experience</noscript>
 
 </body></html>
