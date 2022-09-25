@@ -10,9 +10,11 @@
 
   <h1>Miniplan</h1>
   <nav>
-    <b>Plan</b> - <a href="{{.RemovedHref}}">Removed</a>
+    <ul>
+      <li class="selected"><a href="/">Plan</a></li>
+      <li><a href="{{.RemovedHref}}">Removed</a></li>
+    </ul>
   </nav>
-  
 
 {{range .Changes}}
 
