@@ -2,8 +2,6 @@ package miniplan
 
 import (
 	"testing"
-
-	. "github.com/gregoryv/miniplan/spec"
 )
 
 func TestPlan(t *testing.T) {
@@ -23,7 +21,6 @@ func TestPlan(t *testing.T) {
 	})
 
 	t.Run("Remove", func(t *testing.T) {
-		Reflog(t, YRA05)
 		if err := sys.Remove(c.Ref()); err != nil {
 			t.Fatal(err)
 		}
