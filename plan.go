@@ -175,7 +175,7 @@ type Entry struct {
 	Description string
 	Priority    int
 
-	JustCreated bool
+	JustCreated bool `json:",omitempty"`
 }
 
 func (me *Entry) Ref() string {
