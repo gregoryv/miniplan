@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [unreleased]
+
+- Update shortcut a help text
+
 ## [0.1.1] 2022-09-25
 
 - Add MIT license
