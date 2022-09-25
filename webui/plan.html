@@ -83,11 +83,19 @@
 <div class="row insert">
   <div class="mid"><hr class="separator"></div>
   <div class="right">
-    <button type="submit" form="lastInsertForm" class="insert">insert</button>
+    <button id="lastInsertButton" type="submit" form="lastInsertForm" class="insert">insert</button>
   </div>
 </div>
 
 <script src="/static/enhance.js"></script>
 <noscript>Enable javascript for enhanced experience</noscript>
+
+<script>
+  document.writeln("<pre id=\"enhanced\">");
+  document.writeln("Shortcuts\n");
+  document.writeln("  r : scroll to top");
+  document.writeln("  a : insert at bottom");
+  document.writeln("</pre>");
+</script>
 
 </body></html>
