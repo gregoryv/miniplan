@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [unreleased]
+
+- Granular removed timestamp, sec, min, hour, days or date 
+
 ## [0.2.0] 2022-09-26
 
 - Differentiate between done and not

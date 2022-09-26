@@ -3,6 +3,7 @@ package webui
 import (
 	"embed"
 	_ "embed"
+	"fmt"
 	"html/template"
 	"io"
 	"log"
@@ -165,13 +166,26 @@ type EntryView struct {
 }
 
 func (me *EntryView) RemovedAgo() string {
+	day := 24 * time.Hour
+	week := 7 * day
+	age := time.Since(me.RemovedOn)
 	switch {
 	case me.RemovedOn.IsZero():
 		return ""
-	case time.Since(me.RemovedOn) < time.Duration(24*time.Hour):
-		return "today"
+	case age < time.Minute:
+		return fmt.Sprintf("%vs ago", age.Truncate(time.Second).Seconds())
+
+	case age < time.Hour:
+		return fmt.Sprintf("%vm ago", age.Truncate(time.Minute).Minutes())
+
+	case age < day:
+		return fmt.Sprintf("%vh ago", age.Truncate(time.Hour).Hours())
+
+	case age < week:
+		return fmt.Sprintf("%vdays ago", int(age/24))
+
 	default:
-		return me.RemovedOn.Format("2006-01-02 15:04:05")
+		return me.RemovedOn.Format("2006-01-02")
 	}
 }
 
