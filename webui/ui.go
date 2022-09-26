@@ -27,9 +27,9 @@ func NewUI(sys *Plan) *UI {
 	r.HandleFunc("/static/theme.css", serveAsset("assets/theme.css"))
 	r.HandleFunc("/static/enhance.js", serveAsset("assets/enhance.js"))
 	r.HandleFunc("/removed", ui.serveRemoved).Methods("GET")
-	r.HandleFunc("/removed", ui.editRemoved).Methods("POST")
+	r.HandleFunc("/removed", audit(ui.editRemoved)).Methods("POST")
 	r.HandleFunc("/", ui.servePlan).Methods("GET")
-	r.HandleFunc("/", ui.editPlan).Methods("POST")
+	r.HandleFunc("/", audit(ui.editPlan)).Methods("POST")
 	http.Handle("/", r)
 
 	ui.Router = r
