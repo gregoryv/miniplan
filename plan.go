@@ -157,20 +157,13 @@ func (me *Plan) fixPriority() {
 		}
 		count++
 	}
-	step := 10
-	switch {
-	case count > 9:
-		step = 5
-	case count > 19:
-		step = 3
-	}
-	v := count * step
+	v := count
 	for _, e := range me.Entries {
 		if e.Priority == 0 {
 			break
 		}
 		e.Priority = v
-		v -= step
+		v -= 1
 	}
 }
 

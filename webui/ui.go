@@ -52,11 +52,8 @@ func (me *UI) servePlan(w http.ResponseWriter, r *http.Request) {
 			nextTab: tabber,
 		}
 		// calculate middle prio between previous and current
-		v.InsertPrio = c.Priority + 10 // ie. above
-		if i > 0 {
-			diff := (me.Entries[i-1].Priority - c.Priority) / 2
-			v.InsertPrio = c.Priority + diff
-		}
+		v.InsertPrio = c.Priority + 1 // ie. above
+
 		changes = append(changes, v)
 	}
 	m := map[string]interface{}{

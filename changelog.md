@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [unreleased]
 
+- Simplify prioritisation
 - Allow vertical resize of textarea when in focus
 
 ## [0.1.2] 2022-09-25
