@@ -163,7 +163,7 @@ func (me *EntryView) RemovedAgo() string {
 	switch {
 	case me.RemovedOn.IsZero():
 		return ""
-	case time.Since(me.RemovedOn) < time.Duration(24*60*60*time.Second):
+	case time.Since(me.RemovedOn) < time.Duration(24*time.Hour):
 		return "today"
 	default:
 		return me.RemovedOn.Format("2006-01-02 15:04:05")
