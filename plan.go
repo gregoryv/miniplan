@@ -84,16 +84,40 @@ func (me *Plan) Remove(ref string) error {
 		return fmt.Errorf("empty ref")
 	}
 	var i int
-	for i, _ = range me.Entries {
+	var e *Entry
+	for i, e = range me.Entries {
 		if strings.HasSuffix(me.Entries[i].UUID.String(), ref) {
 			break
 		}
 	}
-	me.Entries[i].RemovedOn = time.Now()
-	me.Removed = append([]*Entry{me.Entries[i]}, me.Removed...)
+	e.RemovedOn = time.Now()
+	me.Removed = append([]*Entry{e}, me.Removed...)
 	me.Entries = append(me.Entries[:i], me.Entries[i+1:]...)
 	return me.Save()
 }
+
+func (me *Plan) ToggleDone(ref string) error {
+	e, err := me.findEntry(me.Removed, ref)
+	if err != nil {
+		return err
+	}
+	e.Done = !e.Done
+	return me.Save()
+}
+
+func (me *Plan) findEntry(list []*Entry, ref string) (*Entry, error) {
+	if ref == "" {
+		return nil, fmt.Errorf("empty ref")
+	}
+	for _, e := range me.Removed {
+		if strings.HasSuffix(e.UUID.String(), ref) {
+			return e, nil
+		}
+	}
+	return nil, ErrNotFound
+}
+
+var ErrNotFound = fmt.Errorf("not found")
 
 func (me *Plan) Delete(ref string) error {
 	if ref == "" {
@@ -172,6 +196,7 @@ type Entry struct {
 	Title       string
 	Description string
 	Priority    int
+	Done        bool `json:",omitempty"`
 
 	JustCreated bool      `json:",omitempty"`
 	RemovedOn   time.Time `json:",omitempty"`

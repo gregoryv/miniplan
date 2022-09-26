@@ -1,11 +1,8 @@
 body { width: 21cm; margin: 0 auto; background-color: #fafafa; }
-
 h1 { text-align: center; }
-
 hr.separator { display: block; margin-top: 10px; border: 1px dashed #a2a2a2; }
 
 /* navigation */
-
 nav { margin-bottom: 24px; text-align: center; font-family: sans-serif;}
 nav ul li { display: inline-block; margin: 0px 10px;}
 nav ul li:first-child { margin-left: 0px;}
@@ -13,10 +10,7 @@ nav a { color: #727272; }
 nav .selected a { color: black; text-decoration: none}
 
 
-
-
 /* layout */
-
 .row {    width:100%;    display: flex;}
 .row.insert {    margin: 14px 0px;}
 .row.insert:hover hr {    border-color: black;}
@@ -32,10 +26,7 @@ a.idref { color: #727272; text-decoration: none; font-family: sans-serif; font-s
 a.idref:hover { text-decoration: underline; }
 
 
-
-
 /* forms and buttons */
-
 .index { font-family: sans-serif; }
 .entry form { margin-top: -4px; }
 .entry input[name=title] { margin-top: 3px;  font-size: 1em; border: 0; width: 90%;}
@@ -47,7 +38,6 @@ a.idref:hover { text-decoration: underline; }
     margin-bottom: 8px;
 }
 .entry textarea:focus { resize: vertical; }
-
 .entry table { width: 100%; }
 .entry .ref {
     width: 70px; position: relative; right: -6px; top: -4px;
@@ -61,8 +51,9 @@ button.delete:hover { color: red; }
 div.deleteNote { text-align: right; font-style: italic; font-size: 0.8em; padding-right: 25px;}
 
 /* removed view */
-
-.removed span.title { display: inline-block; width: 14.5cm; }
+.removed span.title { display: inline-block; width: 13cm;}
 .removed span.timestamp { color: #727272; text-decoration: none;
 			  font-family: sans-serif; font-size: 12px;}
+.removed button.done,.removed button.notdone:hover { color: green; }
+.removed button.notdone { color: #e2e2e2; }
 .removed #removedSeparator { margin: 10px 10px; text-align: center; font-style: italic; font-size: 0.8em;}

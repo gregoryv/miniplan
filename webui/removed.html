@@ -24,16 +24,25 @@
     <li>
       <a name="{{.Ref}}"></a>
 
-      <span class="title">{{.Title}} <span class="timestamp">{{.RemovedAgo}}</span></span> <a href="#{{.Ref}}" title="priority" class="idref">#{{.Ref}}</a>
-      <button type="submit" form="restoreForm{{.Ref}}">restore</button> <button type="submit" form="deleteForm{{.Ref}}" class="delete">delete</button>
+      <span class="title">{{.Title}} <span class="timestamp">{{.RemovedAgo}}</span>	
+      </span> <a href="#{{.Ref}}" title="priority" class="idref">#{{.Ref}}</a>
 
+      
+      <button type="submit" form="toggleForm{{.Ref}}" class="{{if .Done}}done{{else}}notdone{{end}}">done</button>
+      <button type="submit" form="restoreForm{{.Ref}}">restore</button>
+      <button type="submit" form="deleteForm{{.Ref}}" class="delete">delete</button>
+
+      <form method="POST" id="toggleForm{{.Ref}}">
+	<input type="hidden" name="uuid" value="{{.Ref}}">
+	<input type="hidden" name=submit value="toggleDone">
+      </form>
       <form method="POST" id="deleteForm{{.Ref}}">
 	<input type="hidden" name="uuid" value="{{.Ref}}">
-	<input type="hidden" name=submit value=delete>
+	<input type="hidden" name=submit value="delete">
       </form>
       <form method="POST" id="restoreForm{{.Ref}}">
 	<input type="hidden" name="uuid" value="{{.Ref}}">
-	<input type="hidden" name=submit value=restore>
+	<input type="hidden" name=submit value="restore">
       </form>
     </li>{{end}}
 
@@ -44,8 +53,14 @@
       <a name="{{.Ref}}"></a>
 
       <span class="title">{{.Title}} <span class="timestamp">{{.RemovedAgo}}</span></span> <a href="#{{.Ref}}" title="priority" class="idref">#{{.Ref}}</a>
-      <button type="submit" form="restoreForm{{.Ref}}">restore</button> <button type="submit" form="deleteForm{{.Ref}}" class="delete">delete</button>
+<button type="submit" form="toggleForm{{.Ref}}" class="{{if .Done}}done{{else}}notdone{{end}}">done</button>      
+<button type="submit" form="restoreForm{{.Ref}}">restore</button>
+<button type="submit" form="deleteForm{{.Ref}}" class="delete">delete</button>
 
+      <form method="POST" id="toggleForm{{.Ref}}">
+	<input type="hidden" name="uuid" value="{{.Ref}}">
+	<input type="hidden" name=submit value="toggleDone">
+      </form>
       <form method="POST" id="deleteForm{{.Ref}}">
 	<input type="hidden" name="uuid" value="{{.Ref}}">
 	<input type="hidden" name=submit value=delete>

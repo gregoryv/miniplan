@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [unreleased]
 
+- Differentiate between done and not
 - Log edit requests
 - Simplify prioritisation
 - Allow vertical resize of textarea when in focus

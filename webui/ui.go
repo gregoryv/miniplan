@@ -135,6 +135,11 @@ func (me *UI) serveRemoved(w http.ResponseWriter, r *http.Request) {
 
 func (me *UI) editRemoved(w http.ResponseWriter, r *http.Request) {
 	switch r.PostFormValue("submit") {
+	case "toggleDone":
+		if err := me.ToggleDone(r.PostFormValue("uuid")); err != nil {
+			w.WriteHeader(500)
+			w.Write([]byte(err.Error()))
+		}
 	case "delete":
 		if err := me.Delete(r.PostFormValue("uuid")); err != nil {
 			w.WriteHeader(500)
