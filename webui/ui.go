@@ -182,7 +182,7 @@ func (me *EntryView) RemovedAgo() string {
 		return fmt.Sprintf("%vh ago", age.Truncate(time.Hour).Hours())
 
 	case age < week:
-		return fmt.Sprintf("%vdays ago", int(age/24))
+		return fmt.Sprintf("%vdays ago", int(age.Truncate(day).Hours()/24))
 
 	default:
 		return me.RemovedOn.Format("2006-01-02")
