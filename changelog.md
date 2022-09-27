@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [unreleased]
 
+- Always use priority order > 1
 - Granular removed timestamp, sec, min, hour, days or date 
 
 ## [0.2.0] 2022-09-26

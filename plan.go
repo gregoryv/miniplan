@@ -173,19 +173,8 @@ func (me *Plan) Update(ref string, in *Entry) error {
 }
 
 func (me *Plan) fixPriority() {
-	// count those with priority > 0
-	var count int
+	v := len(me.Entries)
 	for _, e := range me.Entries {
-		if e.Priority == 0 {
-			break
-		}
-		count++
-	}
-	v := count
-	for _, e := range me.Entries {
-		if e.Priority == 0 {
-			break
-		}
 		e.Priority = v
 		v -= 1
 	}
