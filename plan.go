@@ -161,9 +161,14 @@ func (me *Plan) Update(ref string, in *Entry) error {
 			c.Title = in.Title
 			c.Description = in.Description
 			c.Priority = in.Priority
-			break
+		} else {
+			// push down other entry
+			if c.Priority == in.Priority {
+				c.Priority--
+			}
 		}
 	}
+	// reset any just created entry
 	for _, e := range me.Entries {
 		e.JustCreated = false
 	}
