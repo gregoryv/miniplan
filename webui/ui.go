@@ -64,7 +64,7 @@ func (me *UI) servePlan(w http.ResponseWriter, r *http.Request) {
 		"RemovedCount": len(me.Removed),
 	}
 
-	if err := plan.Execute(w, m); err != nil {
+	if err := edit.Execute(w, m); err != nil {
 		w.WriteHeader(500)
 		w.Write([]byte(err.Error()))
 	}
@@ -210,9 +210,9 @@ func newTabber() func() int {
 // ----------------------------------------
 
 var (
-	//go:embed plan.html
-	planHtml string
-	plan     = template.Must(template.New("").Parse(planHtml))
+	//go:embed edit.html
+	editHtml string
+	edit     = template.Must(template.New("").Parse(editHtml))
 )
 var (
 	//go:embed removed.html
