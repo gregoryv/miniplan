@@ -108,29 +108,56 @@ func (me *UI) editPlan(w http.ResponseWriter, r *http.Request) {
 }
 
 func (me *UI) serveRemoved(w http.ResponseWriter, r *http.Request) {
-	var older []EntryView
-	var recently []EntryView
+	// group removed entries
+	groups := make([]GroupView, 3)
+	groups[0].Title = "today"
+	groups[1].Title = "yesterday"
+	groups[2].Title = "before that"
+
 	for i, c := range me.Removed {
 		v := EntryView{
 			Entry: *c,
 			Index: i + 1,
 		}
-		if !c.RemovedOn.IsZero() && time.Since(c.RemovedOn) < 7*24*60*60*time.Second {
-			recently = append(recently, v)
-		} else {
-			older = append(older, v)
+
+		switch {
+		case wasToday(c.RemovedOn):
+			groups[0].Entries = append(groups[0].Entries, v)
+
+		case wasYesterday(c.RemovedOn):
+			groups[1].Entries = append(groups[1].Entries, v)
+
+		default:
+			groups[2].Entries = append(groups[2].Entries, v)
 		}
 	}
 	m := map[string]interface{}{
-		"RemovedRecently": recently,
-		"Removed":         older,
-		"RemovedHref":     "/removed",
-		"RemovedCount":    len(me.Removed),
+		"RemovedGroups": groups,
+		"RemovedHref":   "/removed",
+		"RemovedCount":  len(me.Removed),
 	}
 	if err := removed.Execute(w, m); err != nil {
 		w.WriteHeader(500)
 		w.Write([]byte(err.Error()))
 	}
+}
+
+func wasToday(t time.Time) bool {
+	if t.IsZero() {
+		return false
+	}
+	a := time.Now().Truncate(24 * time.Hour)
+	b := t.Truncate(24 * time.Hour)
+	return a == b
+}
+
+func wasYesterday(t time.Time) bool {
+	if t.IsZero() {
+		return false
+	}
+	a := time.Now().Truncate(24*time.Hour).AddDate(0, 0, -1)
+	b := t.Truncate(24 * time.Hour)
+	return a == b
 }
 
 func (me *UI) editRemoved(w http.ResponseWriter, r *http.Request) {
@@ -154,6 +181,15 @@ func (me *UI) editRemoved(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, "/removed", 303)
 }
+
+// ----------------------------------------
+
+type GroupView struct {
+	Title   string
+	Entries []EntryView
+}
+
+// ----------------------------------------
 
 type EntryView struct {
 	Entry
