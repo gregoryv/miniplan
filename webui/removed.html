@@ -18,41 +18,43 @@
 
   <div class="deleteNote">Note! There is no undo after delete.</div>
 
-  <ol class="removed">
+  <table class="removed">
 
     {{range .RemovedGroups}}
 
     {{if .Title}}
-    <div id="removedSeparator">... {{.Title}} ...</div>{{end}}
+    <tr><td colspan="6" id="removedSeparator">... {{.Title}} ...</td></tr>{{end}}
 
     {{range .Entries}}    
-    <li>
-      <a name="{{.Ref}}"></a>
-
-      <span class="title">{{.Title}} <span class="timestamp">{{.When}}</span>	
-      </span> <a href="#{{.Ref}}" title="priority" class="idref">#{{.Ref}}</a>
-
-      
-      <button type="submit" form="toggleForm{{.Ref}}" class="{{if .Done}}done{{else}}notdone{{end}}">done</button>
-      <button type="submit" form="restoreForm{{.Ref}}">restore</button>
-      <button type="submit" form="deleteForm{{.Ref}}" class="delete">delete</button>
-
-      <form method="POST" id="toggleForm{{.Ref}}">
-	<input type="hidden" name="uuid" value="{{.Ref}}">
-	<input type="hidden" name=submit value="toggleDone">
-      </form>
-      <form method="POST" id="deleteForm{{.Ref}}">
-	<input type="hidden" name="uuid" value="{{.Ref}}">
-	<input type="hidden" name=submit value="delete">
-      </form>
-      <form method="POST" id="restoreForm{{.Ref}}">
-	<input type="hidden" name="uuid" value="{{.Ref}}">
-	<input type="hidden" name=submit value="restore">
-      </form>
-    </li>{{end}}
+    
+    <tr class="entry">
+          <td class="index">{{.Index}}.</td>
+	  <td><a name="{{.Ref}}"></a>{{.Title}} <span class="timestamp">{{.When}}</span></td>
+	  <td><a href="#{{.Ref}}" class="idref">#{{.Ref}}</a></td>
+	  <td>
+	    <button type="submit" form="toggleForm{{.Ref}}" class="{{if .Done}}done{{else}}notdone{{end}}">done</button>
+	  </td>
+	  <td><button type="submit" form="restoreForm{{.Ref}}">restore</button></td>
+	  <td><button type="submit" form="deleteForm{{.Ref}}" class="delete">delete</button></td>
+      </tr>
+      <tr class="forms">
+	<form method="POST" id="toggleForm{{.Ref}}">
+	  <input type="hidden" name="uuid" value="{{.Ref}}">
+	  <input type="hidden" name=submit value="toggleDone">
+	</form>
+	<form method="POST" id="deleteForm{{.Ref}}">
+	  <input type="hidden" name="uuid" value="{{.Ref}}">
+	  <input type="hidden" name=submit value="delete">
+	</form>
+	<form method="POST" id="restoreForm{{.Ref}}">
+	  <input type="hidden" name="uuid" value="{{.Ref}}">
+	  <input type="hidden" name=submit value="restore">
+	</form>
+      </tr>
+    {{end}}
 
     {{end}}
-  </ol>
+  </table>
   
 <script src="/static/enhance.js"></script>
 <noscript>Enable javascript for enhanced experience</noscript>

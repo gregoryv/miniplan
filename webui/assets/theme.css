@@ -57,3 +57,8 @@ div.deleteNote { text-align: right; font-style: italic; font-size: 0.8em; paddin
 .removed button.done,.removed button.notdone:hover { color: green; }
 .removed button.notdone { color: #e2e2e2; }
 .removed #removedSeparator { margin: 10px 10px; text-align: center; font-style: italic; font-size: 0.8em;}
+.removed  { border-spacing: 0px}
+.removed .forms { display: none;}
+.removed .entry { background-color: #fafafa; }
+.removed tr:hover {    background-color: white;}
+.removed tr td { vertical-align: top; border-collapse: collapse; padding: 2px 2px; }

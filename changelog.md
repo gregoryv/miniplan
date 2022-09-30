@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [unreleased]
+
+- Removed entries are easy to copy and paste
+
 ## [0.3.0] 2022-09-30
 
 - Group removed by today, yesterday and other
