@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [unreleased]
+## [0.3.0] 2022-09-30
 
 - Group removed by today, yesterday and other
 - Adapt height of description based on length
