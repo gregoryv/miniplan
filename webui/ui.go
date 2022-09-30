@@ -122,12 +122,15 @@ func (me *UI) serveRemoved(w http.ResponseWriter, r *http.Request) {
 
 		switch {
 		case wasToday(c.RemovedOn):
+			v.When = v.RemovedOn.Format("15:04:05")
 			groups[0].Entries = append(groups[0].Entries, v)
 
 		case wasYesterday(c.RemovedOn):
+			v.When = v.RemovedOn.Format("15:04")
 			groups[1].Entries = append(groups[1].Entries, v)
 
 		default:
+			v.When = v.RemovedOn.Format("2006-01-02")
 			groups[2].Entries = append(groups[2].Entries, v)
 		}
 	}
@@ -196,6 +199,7 @@ type EntryView struct {
 
 	InsertPrio int
 	Index      int
+	When       string
 
 	nextTab func() int
 }
