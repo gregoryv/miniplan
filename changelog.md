@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [unreleased]
 
+- Adapt height of description based on length
 - Push down previous entry on equal priority
 - Always use priority order > 1
 - Granular removed timestamp, sec, min, hour, days or date 

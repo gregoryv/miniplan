@@ -10,7 +10,6 @@ import (
 	"net/http"
 	"path/filepath"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/gorilla/mux"
@@ -194,7 +193,7 @@ func (me *EntryView) NextTab() int {
 }
 
 func (me *EntryView) LineHeight() int {
-	return strings.Count(me.Description, "\n") + 2
+	return len(me.Description)/65 + 1
 }
 
 // ----------------------------------------
