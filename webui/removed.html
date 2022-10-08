@@ -58,5 +58,15 @@
   
 <script src="/static/enhance.js"></script>
 <noscript>Enable javascript for enhanced experience</noscript>
+<script>
+  document.writeln("<pre id=\"enhanced\">");
+  document.writeln("Shortcuts\n");
+  document.writeln("  e : goto edit view");
+  document.writeln("  r : goto removed view");
+  document.writeln("  f : scroll to top");
+  document.writeln("  d : scroll to bottom");
+  document.writeln("</pre>");
 
+  disableKeydownOnInputs();
+</script>
 </body></html>
