@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [unreleased]
+## [0.4.0] 2022-10-12
 
 - Shortcut i inserts new first entry 
 - Adapt height of description based on length or number of lines
