@@ -1,4 +1,5 @@
 document.addEventListener('keydown', function(event) {
+    //console.log(event.keyCode, event.key)
     switch (event.keyCode) {
     case 68: // d
 	window.scrollTo(0, document.body.scrollHeight);
@@ -11,7 +12,12 @@ document.addEventListener('keydown', function(event) {
     case 70: // f
 	window.scrollTo(0, 0);
 	break;
-	
+
+    case 73: // i
+	// insert at top
+	document.getElementById("insert1").click();		
+	break;
+
     case 82: // r
 	document.getElementById("nav2").click();	
 	break;

@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [unreleased]
 
+- Shortcut i inserts new first entry 
 - Adapt height of description based on length or number of lines
 - Removed entries are easy to copy and paste
 

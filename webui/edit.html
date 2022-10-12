@@ -30,7 +30,7 @@
 <div class="row insert">
   <div class="mid"><hr class="separator"></div>
   <div class="right">
-      <button type="submit" form="insertForm{{.Ref}}">insert</button>    
+      <button type="submit" id="insert{{.Index}}" form="insertForm{{.Ref}}">insert</button>
   </div>
 </div>
 
@@ -97,6 +97,7 @@
   document.writeln("  r : goto removed view");
   document.writeln("  f : scroll to top");
   document.writeln("  d : scroll to bottom");
+  document.writeln("  i : insert first entry");
   document.writeln("  a : add new entry");
   document.writeln("</pre>");
 
