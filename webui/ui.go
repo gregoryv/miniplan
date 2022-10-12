@@ -28,7 +28,7 @@ func NewUI(sys *Plan) *UI {
 	r.HandleFunc("/static/enhance.js", serveAsset("assets/enhance.js"))
 	r.HandleFunc("/removed", ui.serveRemoved).Methods("GET")
 	r.HandleFunc("/removed", audit(ui.editRemoved)).Methods("POST")
-	r.HandleFunc("/", ui.servePlan).Methods("GET")
+	r.HandleFunc("/", ui.serveEdit).Methods("GET")
 	r.HandleFunc("/", audit(ui.editPlan)).Methods("POST")
 	http.Handle("/", r)
 
@@ -42,7 +42,7 @@ type UI struct {
 	*mux.Router
 }
 
-func (me *UI) servePlan(w http.ResponseWriter, r *http.Request) {
+func (me *UI) serveEdit(w http.ResponseWriter, r *http.Request) {
 	var changes []EntryView
 	tabber := newTabber()
 	for i, c := range me.Entries {
