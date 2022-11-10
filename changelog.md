@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [unreleased]
+
+- Mark entries dirty if changed
+
 ## [0.4.0] 2022-10-12
 
 - Shortcut i inserts new first entry 

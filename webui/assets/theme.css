@@ -43,6 +43,7 @@ a.idref:hover { text-decoration: underline; }
     width: 70px; position: relative; right: -6px; top: -4px;
     background-color: #fafafa; text-align: center; 
 }
+.entry input.dirty, .entry textarea.dirty { background-color: #ffffcc }
 
 button { color: #727272; background-color: inherit; border: 0;}
 button:hover        { color: black; }
