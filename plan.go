@@ -184,25 +184,3 @@ func (me *Plan) fixPriority() {
 		v -= 1
 	}
 }
-
-type Entry struct {
-	UUID        uuid.UUID
-	Title       string
-	Description string
-	Priority    int
-	Done        bool `json:",omitempty"`
-
-	JustCreated bool      `json:",omitempty"`
-	RemovedOn   time.Time `json:",omitempty"`
-}
-
-func (me *Entry) Ref() string {
-	v := me.UUID.String()
-	return v[len(v)-5:]
-}
-
-type ByPriority []*Entry
-
-func (b ByPriority) Len() int           { return len(b) }
-func (b ByPriority) Swap(i, j int)      { b[i], b[j] = b[j], b[i] }
-func (b ByPriority) Less(i, j int) bool { return b[i].Priority > b[j].Priority }
