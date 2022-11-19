@@ -11,3 +11,5 @@ or download a binary release and then run the service
     listens on http://localhost:9180
 
 open your browser to the url shown.
+
+![](./preview.png)
