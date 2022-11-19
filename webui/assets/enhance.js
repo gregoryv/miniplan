@@ -2,7 +2,7 @@ document.addEventListener('keydown', function(event) {
     //console.log(event.keyCode, event.key)
     switch (event.keyCode) {
     case 68: // d
-	window.scrollTo(0, document.body.scrollHeight);
+	window.scrollTo(0, 0);
 	break;
 	
     case 69: // e
@@ -10,7 +10,7 @@ document.addEventListener('keydown', function(event) {
 	break;
 
     case 70: // f
-	window.scrollTo(0, 0);
+	window.scrollTo(0, document.body.scrollHeight);
 	break;
 
     case 73: // i

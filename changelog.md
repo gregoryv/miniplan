@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [unreleased]
 
+- Switch shortcuts f and d
+- Add filters based on hash tags in title and description
 - Mark entries dirty if changed
 
 ## [0.4.0] 2022-10-12
