@@ -45,28 +45,49 @@ type UI struct {
 
 func (me *UI) serveEdit(w http.ResponseWriter, r *http.Request) {
 	var entries []EntryView
+	r.ParseForm()
+	filter := r.Form["filter"]
+	log.Print(filter)
 	tabber := newTabber()
+	// find all tags
 	tags := make(map[string]int)
-	for i, e := range me.Entries {
-		v := EntryView{
-			Entry:   *e,
-			Index:   i + 1,
-			nextTab: tabber,
-		}
-		// calculate middle prio between previous and current
-		v.InsertPrio = e.Priority + 1 // ie. above
-
+	for _, e := range me.Entries {
 		for _, tag := range e.Tags() {
 			tags[tag]++
 		}
-		entries = append(entries, v)
+	}
+	filters := make([]FilterView, 0, len(tags))
+	for k, _ := range tags {
+		v := FilterView{Tag: k}
+	loop:
+		for _, f := range r.Form["filter"] {
+			if k == f {
+				v.Selected = true
+				break loop
+			}
+		}
+		filters = append(filters, v)
+	}
+	// list entries, using filters
+	for i, e := range me.Entries {
+		if len(filter) == 0 || e.HasTag(filter) {
+			v := EntryView{
+				Entry:   *e,
+				Index:   i + 1,
+				nextTab: tabber,
+			}
+			// calculate middle prio between previous and current
+			v.InsertPrio = e.Priority + 1 // ie. above
+
+			entries = append(entries, v)
+		}
 	}
 	m := map[string]interface{}{
 		"Entries":      entries,
 		"LastPriority": 0,
 		"RemovedHref":  "/removed",
 		"RemovedCount": len(me.Removed),
-		"Tags":         tags,
+		"Filters":      filters,
 	}
 
 	if err := edit.Execute(w, m); err != nil {
@@ -193,6 +214,13 @@ func (me *UI) editRemoved(w http.ResponseWriter, r *http.Request) {
 
 // ----------------------------------------
 
+type FilterView struct {
+	Tag      string
+	Selected bool
+}
+
+// ----------------------------------------
+
 type GroupView struct {
 	Title   string
 	Entries []EntryView
@@ -262,6 +290,7 @@ func (me *EntryView) LineHeight() int {
 
 // ----------------------------------------
 
+// newTabber returns an index counter that increases for each call
 func newTabber() func() int {
 	var v int
 	return func() int {

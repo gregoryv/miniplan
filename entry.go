@@ -32,6 +32,18 @@ func (e *Entry) Tags() []string {
 	)
 }
 
+func (e *Entry) HasTag(filter []string) bool {
+	// very naive check
+	for _, tag := range e.Tags() {
+		for f := range filter {
+			if tag == filter[f] {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 var retags = regexp.MustCompile(`#\w+`)
 
 type ByPriority []*Entry

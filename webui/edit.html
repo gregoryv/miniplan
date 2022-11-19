@@ -19,8 +19,8 @@
   <div class="left"></div>
   <div class="mid">
     <form method="GET" id="tagFilters">
-      {{range $tag, $count := .Tags}}
-      <input type="checkbox" name="tag"> {{$tag}}
+      {{range .Filters}}
+      <input type="checkbox" name="filter" value="{{.Tag}}" {{if .Selected}}checked="checked"{{end}}> {{.Tag}}
       {{end}}
     </form>
   </div>
