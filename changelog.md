@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [unreleased]
+## [0.5.0] 2022-11-19
 
 - Switch shortcuts f and d
 - Add filters based on hash tags in title and description
