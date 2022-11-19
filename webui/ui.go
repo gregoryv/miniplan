@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -47,17 +48,21 @@ func (me *UI) serveEdit(w http.ResponseWriter, r *http.Request) {
 	var entries []EntryView
 	r.ParseForm()
 	filter := r.Form["filter"]
-	log.Print(filter)
 	tabber := newTabber()
 	// find all tags
-	tags := make(map[string]int)
+	tagCount := make(map[string]int)
 	for _, e := range me.Entries {
 		for _, tag := range e.Tags() {
-			tags[tag]++
+			tagCount[tag]++
 		}
 	}
+	tags := make([]string, 0, len(tagCount))
+	for k, _ := range tagCount {
+		tags = append(tags, k)
+	}
+	sort.Strings(tags)
 	filters := make([]FilterView, 0, len(tags))
-	for k, _ := range tags {
+	for _, k := range tags {
 		v := FilterView{Tag: k}
 	loop:
 		for _, f := range r.Form["filter"] {
