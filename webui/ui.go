@@ -46,15 +46,19 @@ type UI struct {
 func (me *UI) serveEdit(w http.ResponseWriter, r *http.Request) {
 	var entries []EntryView
 	tabber := newTabber()
-	for i, c := range me.Entries {
+	tags := make(map[string]int)
+	for i, e := range me.Entries {
 		v := EntryView{
-			Entry:   *c,
+			Entry:   *e,
 			Index:   i + 1,
 			nextTab: tabber,
 		}
 		// calculate middle prio between previous and current
-		v.InsertPrio = c.Priority + 1 // ie. above
+		v.InsertPrio = e.Priority + 1 // ie. above
 
+		for _, tag := range e.Tags() {
+			tags[tag]++
+		}
 		entries = append(entries, v)
 	}
 	m := map[string]interface{}{
@@ -62,6 +66,7 @@ func (me *UI) serveEdit(w http.ResponseWriter, r *http.Request) {
 		"LastPriority": 0,
 		"RemovedHref":  "/removed",
 		"RemovedCount": len(me.Removed),
+		"Tags":         tags,
 	}
 
 	if err := edit.Execute(w, m); err != nil {
@@ -203,6 +208,19 @@ type EntryView struct {
 	When       string
 
 	nextTab func() int
+}
+
+func (me *EntryView) TagClassNames() string {
+	return strings.Join(me.TagNames(), " ")
+}
+
+func (me *EntryView) TagNames() []string {
+	tags := me.Entry.Tags()
+	names := make([]string, len(tags))
+	for i := 0; i < len(tags); i++ {
+		names[i] = fmt.Sprintf("tag-%s", tags[i][1:]) // strip # and prefix with tag-
+	}
+	return names
 }
 
 func (me *EntryView) RemovedAgo() string {

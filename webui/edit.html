@@ -15,6 +15,21 @@
     </ul>
   </nav>
 
+<div class="row">
+  <div class="left"></div>
+  <div class="mid">
+    <form method="GET" id="tagFilters">
+      {{range $tag, $count := .Tags}}
+      <input type="checkbox" name="tag"> {{$tag}}
+      {{end}}
+    </form>
+  </div>
+  <div class="right">
+    <button type="submit" id="filterBtn" form="tagFilters">filter</button>
+  </div>
+</div>
+  
+  
 {{range .Entries}}
 
 <form method="POST" id="insertForm{{.Ref}}">
@@ -36,7 +51,7 @@
 
 
 <a name="{{.Ref}}"></a>
-<div class="row entry">
+<div class="row entry {{.TagClassNames}}">
 
   <div class="left index">{{.Index}}. </div>
 

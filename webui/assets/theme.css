@@ -27,6 +27,7 @@ a.idref:hover { text-decoration: underline; }
 
 
 /* forms and buttons */
+form#tagFilters { float: right }
 .index { font-family: sans-serif; }
 .entry form { margin-top: -4px; }
 .entry input[name=title] { margin-top: 3px;  font-size: 1em; border: 0; width: 90%;}
