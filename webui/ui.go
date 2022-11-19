@@ -44,7 +44,7 @@ type UI struct {
 }
 
 func (me *UI) serveEdit(w http.ResponseWriter, r *http.Request) {
-	var changes []EntryView
+	var entries []EntryView
 	tabber := newTabber()
 	for i, c := range me.Entries {
 		v := EntryView{
@@ -55,10 +55,10 @@ func (me *UI) serveEdit(w http.ResponseWriter, r *http.Request) {
 		// calculate middle prio between previous and current
 		v.InsertPrio = c.Priority + 1 // ie. above
 
-		changes = append(changes, v)
+		entries = append(entries, v)
 	}
 	m := map[string]interface{}{
-		"Changes":      changes,
+		"Entries":      entries,
 		"LastPriority": 0,
 		"RemovedHref":  "/removed",
 		"RemovedCount": len(me.Removed),
