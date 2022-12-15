@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [unreleased]
+
+- Mark entry dirty on keyup
+
 ## [0.5.0] 2022-11-19
 
 - Switch shortcuts f and d

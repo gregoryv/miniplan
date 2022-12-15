@@ -36,14 +36,14 @@ disableKeydownOnInputs();
 
 function disableKeydownOnInputs() {
     document.querySelectorAll('input').forEach(element => {
-	element.addEventListener('keydown', e => {
+	element.addEventListener('keyup', e => {
 	    e.stopPropagation();
 	    markDirty(element);   
 	});
     });
 
     document.querySelectorAll('textarea').forEach(element => {
-	element.addEventListener('keydown', e => {
+	element.addEventListener('keyup', e => {
 	    e.stopPropagation();
 	    markDirty(element);   
 	});
