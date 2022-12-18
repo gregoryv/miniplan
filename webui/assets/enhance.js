@@ -1,4 +1,4 @@
-document.addEventListener('keydown', function(event) {
+document.addEventListener('keyup', function(event) {
     //console.log(event.keyCode, event.key)
     switch (event.keyCode) {
     case 68: // d
