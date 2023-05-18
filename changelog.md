@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [unreleased]
+## [0.6.0] 2023-05-18
 
 - Mark entry dirty on keyup
 
